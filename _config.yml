@@ -12,7 +12,7 @@ picture: assets/images/profile.jpg
 
 # your site color theme, true for dark theme, 
 # false to light theme, auto to switch with system.
-dark-theme: auto
+dark-theme: true
 
 # If you want to include your resume, set to true
 # and specify source (external or local).
@@ -20,7 +20,7 @@ resume: true
 resume-external: true
 resume-url: https://google.com/?q=my+resume
 
-url: https://sergiokopplin.github.io/indigo
+url: https://turmoil2k.github.io/indigo
 # your url: https://USERNAME.github.io
 
 permalink: /:title/
@@ -31,15 +31,15 @@ permalink: /:title/
 # if you don't want comments in your posts, leave categories empty
 disqus:
   shortname: github # enter this from your disqus account
-  categories: [blog, project] # only show disqus for posts that have these categories
+  categories: #[blog, project] # only show disqus for posts that have these categories
 
 # if you don't have any of social below, comment the line
-facebook: myfacebook
-twitter: mytwitter
-instagram: myinstagram
+# facebook: myfacebook
+# twitter: mytwitter
+# instagram: myinstagram
 linkedin: mylinkedin
-github: mygithub
-email: myemail@gmail.com
+github: github.com/turmoil2k
+email: jumaadbusiness@gmail.com
 
 authors:
   johndoe:
@@ -58,7 +58,7 @@ authors:
 # do you want a larger site? change the option below
 # options: [normal, large] | default: normal
 # normal = 560px / large = 810px
-width: normal
+width: large
 
 # if you do/don't need pagination, toggle 'enabled' between true/false below
 pagination:
