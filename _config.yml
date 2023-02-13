@@ -1,5 +1,5 @@
 # main text of home
-title: Juma Al Remeithi
+title: Juma Al Remeithi2
 bio: Game Developer & Graphics / Rendering / Shader Enthusiast
 
 # twitter summary info
@@ -20,7 +20,7 @@ resume: true
 resume-external: true
 resume-url: https://google.com/?q=my+resume
 
-url: https://turmoil2k.github.io/indigo
+url: https://turmoil2k.github.io
 # your url: https://USERNAME.github.io
 
 permalink: /:title/
@@ -38,7 +38,7 @@ disqus:
 # twitter: mytwitter
 # instagram: myinstagram
 linkedin: mylinkedin
-github: github.com/turmoil2k
+github: turmoil2k
 email: jumaadbusiness@gmail.com
 
 authors:
