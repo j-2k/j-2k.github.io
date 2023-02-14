@@ -1,5 +1,5 @@
 # main text of home
-title: Juma Al Remeithi2
+title: Juma Al Remeithi3
 bio: Game Developer & Graphics / Rendering / Shader Enthusiast
 
 # twitter summary info
@@ -37,11 +37,17 @@ disqus:
 # facebook: myfacebook
 # twitter: mytwitter
 # instagram: myinstagram
-linkedin: mylinkedin
+linkedin: jumaalremeithi
 github: turmoil2k
 email: jumaadbusiness@gmail.com
 
 authors:
+  juma:
+    name: Juma Al Remeithi
+    bio: Game Developer & Graphics Enthusiast
+    external-image: false
+    picture: assets/images/profile.jpg
+    twitter: johndoe
   johndoe:
     name: John Doe
     bio: A Man who travels the world eating noodles
