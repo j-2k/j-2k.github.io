@@ -1,5 +1,5 @@
 # main text of home
-title: Juma Al Remeithi4
+title: Juma Al Remeithi5
 bio: Generalist Game Developer with great interest in Rendering, Shaders, & anything Graphics related.
 
 # twitter summary info
@@ -18,7 +18,7 @@ dark-theme: true
 # and specify source (external or local).
 resume: true
 resume-external: false
-resume-url: https://google.com/?q=my+resume
+resume-url: jumacv.pdf
 
 url: https://j-2k.github.io
 # your url: https://USERNAME.github.io
@@ -46,7 +46,7 @@ authors:
     name: Juma Al Remeithi
     bio: Game Developer & Graphics Enthusiast
     external-image: false
-    picture: assets/images/jumapfptest.jpg
+    picture: assets/images/jumapfptest.jpeg
     twitter: 0xsl
   johndoe:
     name: John Doe
