@@ -23,10 +23,10 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
 <ul class="skill-list">
 	<li>Unity</li>
-	<li>HLSL</li>
-	<li>C# / C++ / Javascript</li>
-	<li>Git / Github</li>
-	<li>Agile</li>
+	<li>HLSL | GLSL</li>
+	<li>C# | C++ | Javascript</li>
+	<li>Git | Github</li>
+	<li>Agile | Scrum</li>
 	<li>SFML</li>
 	<li>Sony Vegas | Premiere Pro</li>
 	<li>Blender | 3DS Max</li>
