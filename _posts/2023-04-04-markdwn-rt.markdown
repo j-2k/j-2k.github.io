@@ -9,7 +9,7 @@ tag:
 - elements
 star: true
 category: blog
-author: jumaalremeithi
+author: juma
 description: Markdown summary with different options
 ---
 
