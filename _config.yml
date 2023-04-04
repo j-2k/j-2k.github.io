@@ -23,8 +23,7 @@ resume-url: jumacvonline.pdf
 url: https://j-2k.github.io
 # your url: https://USERNAME.github.io
 
-#permalink: /:title/
-permalink: https://j-2k.github.io
+permalink: /:title/
 
 # To enable google analytics, supply your token below
 # analytics-google: 'UA-MYANALYTICS'
