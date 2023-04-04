@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-This is a simple and minimalist <a href="https://github.com/sergiokopplin/indigo">indigo template</a> made by <a href="https://sergiokopplin.github.io/indigo/">sergio kopplin</a>
+This is a simple and minimalist <a href="https://github.com/sergiokopplin/indigo">indigo template</a> made by <a href="https://github.com/sergiokopplin/">sergio kopplin</a>
 </p>
 
 ---
