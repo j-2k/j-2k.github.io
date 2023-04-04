@@ -3,10 +3,10 @@ title: "My First Raytracing Project"
 layout: post
 date: 2023-04-04 08:19
 tag: graphics
-image: https://sergiokopplin.github.io/indigo/assets/images/jekyll-logo-light-solid.png
+image: /assets/images/jumapfptest.jpeg
 headerImage: true
 projects: true
-hidden: true # don't count this post in blog pagination
+#hidden: true # don't count this post in blog pagination
 description: "This is a simple and minimalist template for Jekyll for those who likes to eat noodles."
 category: project
 author: juma
