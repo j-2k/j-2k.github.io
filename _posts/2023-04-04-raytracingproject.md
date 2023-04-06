@@ -18,7 +18,7 @@ Documenting all my learnings from creating my first raytracer/pathtracer & essen
 ---
 
 # Content
-1. UV Image (the Hello World for a raytracer)
+1. [UV Image](#UV_Image) (the Hello World for a raytracer)
 2. Rendering My First Sphere
 3. Visualize Raytracing in Unity (Small detour to see how a raytracer "looks" like)
 
@@ -27,7 +27,7 @@ to be continued...
 
 ---
 
-## UV Image
+## UV Image <a name="UV_Image"></a>
 
 ---
 
