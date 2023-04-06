@@ -13,15 +13,32 @@ author: juma
 externalLink: false
 ---
 
-Documenting all my learnings from creating my first raytracer/pathtracer & essentially anything new that I find out. Interested in this raytracing repository? [Click here for to see it on my github](https://github.com/j-2k/Raytracing).
+Documenting all my learnings from creating my first raytracer/pathtracer & essentially anything new that I find out. Interested in this raytracing repository? [Click here to see it on my github](https://github.com/j-2k/Raytracing).
 
 ---
 
-Starting the project
+# Content
+1. UV Image (the Hello World for a raytracer)
+2. Rendering My First Sphere
+3. Visualize Raytracing in Unity (Small detour to see how a raytracer "looks" like)
 
 to be continued...
 
 
 ---
+
+## UV Image
+
+---
+
+## Rendering My First Sphere
+
+---
+
+## Visualize Raytracing in Unity
+
+---
+
+
 
 [Click here to go back to my home page](https://j-2k.github.io).
