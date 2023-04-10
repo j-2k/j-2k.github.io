@@ -17,6 +17,8 @@ Documenting all my learnings from creating my first raytracer/pathtracer & essen
 
 > :warning: Do becareful taking everything as granted, I am human so there might be some mistakes.
 
+This documentation is targeted towards people with all ranges of experience. I try to make it as dummy as possible but sometimes we just have to get technical so I hope it all makes sense with just a little thinking. 
+
 ---
 
 # Content
@@ -71,9 +73,18 @@ to be continued...
                 m_ImageData[x + y * m_FinalImage->GetWidth()] = PerPixel(coord);
             }
         }
-    }
     m_FinalImage->SetData(m_ImageData);
+    }
+
+    //Renderer Class with PerPixel Function (Acting Fragment Shader)
+    uint32_t Renderer::PerPixel(glm::vec2 fragCoord){
+	    uint8_t r = (uint8_t)(fragCoord.x * 255.0f);
+	    uint8_t g = (uint8_t)(fragCoord.y * 255.0f);
+
+	    return 0xff000000 | (g << 8) | r;
+    }
     {% endhighlight %}
+    <figcaption class="caption">Code for visualizing UV coordinates</figcaption>
 
     </div>
 
@@ -82,13 +93,56 @@ to be continued...
         How do we generate such a Image?<br>
         Here we are using a Vulkan Image to generate this for us, but the concept is the same in all instances. We first take the height & width of our image, then we loop over every single pixel in the image space and divide the current coordinates dimension with its respective image height/width.
         <br>
-        Once we have a coordinate we send it in a PerPixel function, this function acts as a stage in the popular graphics pipeline called "Fragment Shader". We didn't implement a real fragment shader though hence the world "act" I used previously... this is a image remember? :)
+        Once we have a coordinate we send it in a PerPixel function to give us a color THATS IT dont overthink this part. More info on this function it acts as a stage in the popular graphics pipeline called "Fragment Shader". We didn't implement a real fragment shader though hence the word "act" I used previously... This is a image remember? :)<br>
         <br>
-        
+        Diving into the PerPixel Function things start to explode in my brain literally. I didn't understand a thing before & im not sure if I fully understand till now since im self learning everything here. But I think I know what is going on & im going to try to explain in simple terms hopefully. <br>
+        <a href="https://en.wikipedia.org/wiki/RGBA_color_model" target="_blank">I found this on wikipedia while writing this next section its going to be crazy useful, click it to check it out, it covers how colors & bits work, all low level technical stuff. You can skip to the next part below if its boring</a>.
         </p>
     </div>
 </div>
 
+<div class="side-by-side">
+    <div class="toleft">
+    <center><strong>
+    <h2>Bits & 
+    <span style="color:cyan">C</span><span style="color:#F800FF">o</span><span style="color:yellow">l</span><span style="color:lightgreen">o</span><span style="color:#FFA500">r</span><span style="color:#FF00A1">s</span>!</h2>
+    Bits are either 1 or 0<br>
+    1 Byte is 8 Bits<br>
+    1 Hex Digit is 4 Bits<br>
+    uint32_t holds 32 Bits<br>
+    uint8_t holds 8 Bits<br>
+    <mark>RGBA is a color format that holds 32 Bits</mark><br>
+    </strong></center>
+    <figcaption class="caption">Some important things to know</figcaption>
+    <br>
+    <br>
+    <img class="image" src="/assets/raytracingproj/HexRGBAbits.png" width="800" height="60" alt="Hex RGBA Bits Image">
+    <figcaption class="caption">RGBA32 Memory Channel</figcaption>
+    <figcaption class="caption"><mark>Bytes stored in memory in a little endian machine are in the order of ABGR</mark></figcaption>
+    </div>
+
+    <div class="toright">
+        <p>
+        First of all WHAT is our image?<br>
+         Well I didn't show this previously but we defined our image format to be in RGBA (this was done via Vulkan so its helping a lot here) but the question still lies what is RGBA? Here I went into a mini downward spiral of curiosity since I didn't learn or do much low level programming, I wanted to know exactly what in the magic is going on specifically in the line below. Now continue on the left.
+        </p>
+         {% highlight c++ %}return 0xff000000 | (g << 8) | r; {% endhighlight %}
+        <p>
+         Looking at the beauty of this format on the left everything made sense to me now. RGBA is 32 bits each channel holds 8 bits (32 bits ÷ 4 color channels) which is also 2 HEX digits. Ever wondered in a game why when you change the color of your crosshair the max is 255? the answer is 8 bits, uint8_t is a unsigned integer (only positive) datatype that can hold a value of exactly up to 255.
+        </p>
+    </div>
+</div>
+
+{% highlight c++ %} return 0xff000000 | (g << 8) | r; // | is the or operator // << is the bitshifting operator{% endhighlight %}
+So what is going on here? every GROUPED 2 HEX DIGITS after "0x" is a color channel except that everything here is actually reversed instead of RGBA its ABGR (LOOK AT THE HIGHLIGHTED TEXT UNDER THE RGBA32 MEMORY IMAGE ON THE LEFT). So again every GROUPED 2 HEX DIGITS after "0x" make a color channel "return 0xff000000" ff is our alpha the next 2 zeros are our blue the next 2 are green the next 2 are red. Now here comes the [bitwise or operators](https://en.wikipedia.org/wiki/Bitwise_operation){:target="_blank"} r is being directly inserted into the memory block at the start so it immediately takes up 8 bits r is a variable of uint8_t, then g << 8 does the same thing except the << signales it to SHIFT 8 bits to the left and now is occupying the space AFTER the red channel, we then leave the blue channel empty to get the classic UV coordinate image of red & green. If you are curious on how the or operator inserts im going to quickly explain below using bits. Long story short, ORing 2 bits together will give you 0 if both bits are 0, in the case one of the 2 bits are 1 the answer is 1.<br>
+[Click here to open a new tab to a wiki page of bitwise operations if you want to learn more.](https://en.wikipedia.org/wiki/Bitwise_operation){:target="_blank"}
+{% highlight binary %}//Example from https://en.wikipedia.org/wiki/Bitwise_operation
+   0010 (decimal 2)
+OR 1000 (decimal 8)
+ = 1010 (decimal 10){% endhighlight %}
+Finally, with this explanation done we can now go back to the code & return this memory block that is a uint32_t which is what the function returns. This color then gets placed into the imagedata or PIXEL whenever it gets called.
+
+I loved this segment so much because of the low level part since I never was REALLY taught this properly & I learned this all by myself & am really happy with my progress even though its small. Hope to see you in the next section where its all just Mathematics✨
 
 ---
 
