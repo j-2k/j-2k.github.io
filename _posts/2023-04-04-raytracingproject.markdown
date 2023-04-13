@@ -248,7 +248,7 @@ Now we need to find the circle intersection, you can just mouse over the graph a
     This is actually enough now with these 2 formulas:<br>
     <mark>𝑷<sub>𝒙𝒚</sub> = 𝒂<sub>𝒙𝒚</sub> + 𝒃<sub>𝒙𝒚</sub>𝑻</mark><br> (substitued in it would be 𝑷𝒙𝒚 = (-3,-3) + (1,1)𝑻)<br>
     <mark>𝒙<sup>2</sup> + 𝒚<sup>2</sup> - 𝒓<sup>2</sup> = 0</mark><br>
-    Lets substitute the first equation into the second, this might get a bit heavy so try to tag along.
+    Lets substitute the first equation into the second with a radius of 2, this might get a bit heavy so try to tag along.
     </p>
     </div>
 
@@ -258,13 +258,20 @@ Now we need to find the circle intersection, you can just mouse over the graph a
     </div>
 </div>
 
-(𝒂<sub>𝒙</sub> + 𝒃<sub>𝒙</sub> 𝑻)<sup>2</sup> + (𝒂<sub>𝒚</sub> + 𝒃<sub>𝒚</sub> 𝑻)<sup>2</sup> - 4 = 0 Which after substitution looks like (-3 + 1𝑻)<sup>2</sup>+(-3 + 1𝑻)<sup>2</sup>- 4 = 0<br>
-The key here is to now solve for 𝑻, im not going to go step by step for solving it since its massive & my web dosn't currently have mathjax implemented. <br>
-but at the end when you solve for 𝑻 you get a nice small equation: 2𝑻<sup>2</sup> - 12𝑻 + 14 = 0 what does it look like?<br>
-A Quadratic equation so how do we solve this? We use the [Quadratic Formula](https://en.wikipedia.org/wiki/Quadratic_formula){:target="_blank"} <br>
+(𝒂<sub>𝒙</sub> + 𝒃<sub>𝒙</sub> 𝑻)<sup>2</sup> + (𝒂<sub>𝒚</sub> + 𝒃<sub>𝒚</sub> 𝑻)<sup>2</sup> - 4 = 0 Which after substitution looks like (-3 + 1𝑻)<sup>2</sup>+(-3 + 1𝑻)<sup>2</sup>- 4 = 0 solving for 𝑻:<br>
+=> -3<sup>2</sup> + 2(-3 * 1𝑻) + 𝑻<sup>2</sup> + -3<sup>2</sup> + 2(-3 * 1𝑻) + 𝑻<sup>2</sup> - 4 = 0<br> 
+=> 2𝑻<sup>2</sup> - 12𝑻 + 14 = 0 what does it look like?<br>
+A Quadratic equation so how do we solve this? We use the [Quadratic Formula](https://en.wikipedia.org/wiki/Quadratic_formula){:target="_blank"} (-𝒃 ± sqrt(𝒃<sup>2</sup> - 4𝒂𝒄))/2𝒂<br>
 However, in our case we can just use the discriminant which is everything inside the sqrt, (b<sup>2</sup> - 4ac)<br>
 The coefficients are as follows: a = 2, b = -12, c = 14. Substitute them in the discriminant we get 144 - 112 = 32.<br>
-One thing the answer of the discriminant tells us is actually how many solutions there are depending on the answer, in our case we got 32 which is above 0 which means there is 2 solutions (2 INTERSECTIONS). Now the discriminant is dependent on if its above 0 then it means there are 2 solutions if its 0 then that means it has 1 solution if its under 0 it means it has 0 solutions. This is literally what we will be using to find out if we intersect a sphere or not.<br>
+One thing the answer of the discriminant tells us is actually how many solutions there are depending on the answer, in our case we got 32 which is above 0 which means there is 2 solutions (2 INTERSECTIONS). The amount of solutions is dependent on the answer of the discriminant.<br>
+<strong>
+If discriminant is > 0 that means we have 2 Solutions (2 Intersects through a circle).<br>
+If discriminant is 0 that means we have 1 Solution (1 Intersect on a circles edge).<br>
+If discriminant is < 0 that means we have NO Solutions (No Intersect / Ray misses the circle).<br>
+</strong>
+With just this we can actually find out if any of our rays hit a sphere or not with a simple discriminant check, like so:<br>
+{% highlight c++ %}if (discriminant >= 0) return 0xff00ffff; //What color would this produce, from what we learned before?{% endhighlight %}
 Another Example with magic square roots below to show the effect of the discriminant:<br>
 <strong>sqrt(4) is 2 or -2 // 2 solutions<br>
 sqrt(0) is 0 which ±0 is the same // 1 solution<br>
@@ -275,7 +282,7 @@ sqrt(-x) is 𝒊 which any negative number under a square root has no real solut
 <figcaption class="caption">Ray-sphere intersection results</figcaption>
 <figcaption class="caption">Taken from popular raytracing in 1 weekend book</figcaption>
 </center>
-This is actually just enough to know if our ray hit something or not. But if you want to find the exact intersection points you have to substitute all coefficients in the quadratic formula. First in our discriminant we know we have 2 solutions so that means our answer after substitution & solving should give us 2 answers which is true, the answers are 4.4142136~ & 1.5857864~. These numbers are what 𝑻 is equal to so what do we do now? Sub them in the ray equation which will yield you 2 equations -3 + 1(1.5857864) => -1.414~ & -3 + 1(4.4142136) => 1.414~ & since the x & y is equal the coordinates are (-1.414 , -1.414) & (1.414 , 1.414), that is all we can also tell the negative version is the one closer to us or in other words the first intersection since our origin was (-3 , -3).<br>
+But now what if you wanted to know about where EXACTLY did the ray intersect the sphere @ what coordinate? To find the exact intersection points you have to substitute all coefficients in the quadratic formula. First in our discriminant we know we have 2 solutions so that means our answer after substitution & solving should give us 2 answers which is true, the answers are 4.4142136~ & 1.5857864~. These numbers are what 𝑻 is equal to so what do we do now? Sub them in the ray equation which will yield you 2 equations -3 + 1(1.5857864) => -1.414~ & -3 + 1(4.4142136) => 1.414~ & since the x & y parts of a ray equation is the same, then the answer will be for both its x & y. The intersection coordinates are (-1.414 , -1.414) & (1.414 , 1.414), that is all we can also tell the negative version is the one closer to us or in other words the first intersection since our origin was (-3 , -3).<br>
 <strong>Check the graph above and mouse over the line intersecting the circle at the origin and check its intersection points to see for yourself.</strong>
 
 ---
@@ -283,11 +290,113 @@ This is actually just enough to know if our ray hit something or not. But if you
 
 ## Rendering My First Sphere
 
-***ALMOST EVERYTHING HERE IS BASED ON THE PREVIOUS PART I HIGHLY SUGGEST UNDERSTANDING THE MATH BEFORE PROCEEDING***
+***Current Ray Mapping & Issues***
+
+Going back to some code, we now insert a bunch of new things into the PerPixel Function. Specifically, we add all the formulas for the new math stuff we learned, we need these formulas to find the discriminant to show the sphere on our screen. However, before that even we need to fix something with our rays. Look at the image below on the right & specifically the top half of it, see how all the dotted lines are not centered and they are creating a weird slanted pyramid? that is how our ray is actually shooting out of the camera point which looks wrong. We want to have it centered like the bottom version of the right image. Left side Image also shows it but in a different angle.
+
+<div class="side-by-side">
+    <div class="toleft">
+    <img class="image" src="/assets/raytracingproj/remapping1Cam.png" alt="Remap Cam 1 Image">
+    <figcaption class="caption">Top half of the image displays the rays being only focused in the 0,0 to 1,1 range (see the other visualization on the top half image on the right.<br>
+    Bottom half shows how a camera should behave, where all the rays it shoots are all centered. Look at bottom half of the right image to get a better idea.</figcaption>
+    </div>
+
+    <div class="toright">
+    <img class="image" src="/assets/raytracingproj/remapping1Vis.png" alt="Remap Vis 1 Image">
+    <figcaption class="caption">The Black circle is the origin to help you see the difference.<br>
+    Top half shows our current rays mapped in the 0,0 to 1,1 range, this is a different angle compared to the image on the left, this should help give you an idea of why the 0 to 1 range is wrong.</figcaption>
+    </div>
+</div>
+
+Actually just thought of extremely simple example to understand, Imagine both your arms out holding a camera & the camera is centered to the center of a picture of the Mona Lisa, now you try to take a picture of the mona lisa but your camera is mapped to the 0 to 1 range. Taking this picture, you would only see the top right "square" of the mona lisa on your picture. See them below, comparing again 0 to 1 range vs -1 to 1 range.
+
+<div class="side-by-side">
+    <div class="toleft">
+    <img class="image" src="/assets/raytracingproj/monalisa01.png" alt="Remap Cam 1 Image">
+    <figcaption class="caption">Picture taken from Wikipedia about the Mona Lisa<br>
+    What is the mapping for this? (Mouse below for the answer)<br></figcaption>
+    <div class="spoiler"><p>If you said 0 to 1 you are right!</p></div>
+    </div>
+
+    <div class="toright">
+    <img class="image" src="/assets/raytracingproj/monalisa-11.png" alt="Remap Vis 1 Image">
+    <figcaption class="caption">Picture taken from Wikipedia about the Mona Lisa<br>
+    What is the mapping for this? (Mouse below for the answer)<br></figcaption>
+    <div class="spoiler"><p>If you said -1 to 1 you are right!</p></div>
+    </div>
+</div>
+
+***ALMOST EVERYTHING HERE & ONWARDS IS BASED ON THE PREVIOUS SECTION ON MATHEMATICS I HIGHLY SUGGEST UNDERSTANDING THE MATH BEFORE PROCEEDING***
+
+<div class="side-by-side">
+    <div class="toleft">
+    {% highlight c++ %}
+        //Renderer Class with Render Image Function
+    void Renderer::Render(){
+        for (uint32_t y = 0; y < m_FinalImage->GetHeight(); y++){
+            for (uint32_t x = 0; x < m_FinalImage->GetWidth(); x++){
+                glm::vec2 coord = {
+			(float)x / (float)m_FinalImage->GetWidth(),
+			(float)y / (float)m_FinalImage->GetHeight()
+			};
+            //====================NEW=ADDITIONS=BELOW====================
+                coord = coord * 2.0f - 1.0f;    // NEW ADDITION TO MAP RAYS FROM -1 to 1
+            //====================NEW=ADDITIONS=ABOVE====================
+                m_ImageData[x + y * m_FinalImage->GetWidth()] = PerPixel(coord);
+            }
+        }
+    m_FinalImage->SetData(m_ImageData);
+    }
+
+    //Renderer Class with PerPixel Function (Acting Fragment Shader)
+    uint32_t Renderer::PerPixel(glm::vec2 fragCoord){
+	    uint8_t r = (uint8_t)(fragCoord.x * 255.0f);
+	    uint8_t g = (uint8_t)(fragCoord.y * 255.0f);
+    //====================NEW=ADDITIONS=BELOW====================
+        glm::vec3 rayOrigin(0); 
+        glm::vec3 rayDirection(fragCoord.x,fragCoord.y,-1);
+        float radius = 0.5f;
+
+        //solving for the quadratic formula below,
+        //a coefficient under / b coefficient under / c coefficient under
+        // (bx^2 + by^2)t^2 + (2(axbx + ayby))t + (ax^2 + ay^2 - r^2) = 0
+        //r is the radius
+        //a is ray origin
+        //b is ray direction
+        float a = glm::dot(rayDirection, rayDirection);             //a coefficient
+        float b = 2.0f * glm::dot(rayOrigin, rayDirection);         //b coefficient
+        float c = glm::dot(rayOrigin, rayOrigin) - radius * raidus; //c coefficient
+
+        //finding out the # of solutions from the discriminant
+        //quadratic formula discriminant is b^2 - 4ac
+        float discriminant = b * b - 4.0f * a * c;
+
+        if (discriminant >= 0)
+        {
+            return 0xffff00ff;
+        }       
+        return 0xff000000;
+
+    //====================NEW=ADDITIONS=ABOVE====================
+    }
+    {% endhighlight %}
+    <figcaption class="caption">New Additions to Renderer Class Functions to display our Sphere<br>
+    All new additions are encapsulated between the comments that look like //====...</figcaption>
+
+    </div>
+
+    <div class="toright">
+        <p>
+        Sorry for writing so much about something simple like remapping but it was something I always did without understanding why I did it, so anyways how do we fix this mapping/ray issue? After getting the screen coordinates, we multiply every coordinate by 2 & then subtract by 1. Think about the calculation mentally in your head. {% highlight c++ %}coord = coord * 2.0f - 1.0f; //Maps all coordinates to the -1 to 1 range{% endhighlight %}
+        </p>
+        
+    </div>
+</div>
 
 ---
+<a name="Visualize_Raytracing"></a>
 
-## Visualize Raytracing in Unity <a name="Visualize_Raytracing"></a>
+## Visualize Raytracing in Unity
 
 ***I tried to visualize my raytracer in Unity, here's my take on it***
 
