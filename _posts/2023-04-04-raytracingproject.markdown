@@ -442,11 +442,15 @@ float c = glm::dot(rayOrigin, rayOrigin) - radius * raidus;{% endhighlight %}
 ## The First Raytraced 3D Sphere 🎉🎉🎉
 
 Officially wrote my first raytraced 3D Sphere I will also include the next section to visualize this raytracer & whats going on in this program in a better light / prespective with real individual rays that you can see, I hope you stick around.
+<img class="image" src="/assets/raytracingproj/firstsphere.png"  alt="First Sphere Image">
+<figcaption class="caption">My first ever Raytraced Sphere.<br>
+    It's 3D but we can't see it because of flat shading.<br>
+    color is return 0xff000000 | g << 8 | r;</figcaption>
 
 ---
 <a name="Visualize_Raytracing"></a>
 
-## Visualize Raytracing in Unity
+## Visualize Raytracing in Unity :earth_asia::eyes:
 
 ***I tried to visualize my raytracer in Unity, here's my take on it***
 
