@@ -326,7 +326,9 @@ Actually just thought of extremely simple example to understand, Imagine both yo
     </div>
 </div>
 
-***ALMOST EVERYTHING HERE & ONWARDS IS BASED ON THE PREVIOUS SECTION ON MATHEMATICS I HIGHLY SUGGEST UNDERSTANDING THE MATH BEFORE PROCEEDING***
+<center><strong><i>
+ALMOST EVERYTHING HERE & ONWARDS IS BASED ON THE PREVIOUS SECTION ON MATHEMATICS I HIGHLY SUGGEST UNDERSTANDING THE MATH BEFORE PROCEEDING, PLEASE DON'T WORRY IF THINGS DONT MAKE SENSE WITH RAYS THE NEXT SECTION COVERS VISUALIZING THIS SAME RAYTRACER BUT IN A ENGINE WITH A 3D PRESPECTIVE TO IT SO YOU CAN GET A BETTER IDEA OF WHATS GOING ON
+</i></strong></center>
 
 <div class="side-by-side">
     <div class="toleft">
@@ -353,7 +355,7 @@ Actually just thought of extremely simple example to understand, Imagine both yo
 	    uint8_t r = (uint8_t)(fragCoord.x * 255.0f);
 	    uint8_t g = (uint8_t)(fragCoord.y * 255.0f);
     //====================NEW=ADDITIONS=BELOW====================
-        glm::vec3 rayOrigin(0); 
+        glm::vec3 rayOrigin(0,0,2); //what do you think will happen if ray origin is (0,0,0)?
         glm::vec3 rayDirection(fragCoord.x,fragCoord.y,-1);
         float radius = 0.5f;
 
@@ -387,11 +389,59 @@ Actually just thought of extremely simple example to understand, Imagine both yo
 
     <div class="toright">
         <p>
-        Sorry for writing so much about something simple like remapping but it was something I always did without understanding why I did it, so anyways how do we fix this mapping/ray issue? After getting the screen coordinates, we multiply every coordinate by 2 & then subtract by 1. Think about the calculation mentally in your head. {% highlight c++ %}coord = coord * 2.0f - 1.0f; //Maps all coordinates to the -1 to 1 range{% endhighlight %}
+        Sorry for writing so much about something simple like remapping but it was something I always did without understanding why I did it, so anyways how do we fix this mapping/ray issue? After getting the screen coordinates, we multiply every coordinate by 2 & then subtract by 1. Substitute a coordinate in the coord variable below & think about the calculation mentally in your head. </p>{% highlight c++ %}coord = coord * 2.0f - 1.0f; //Maps all coordinates to the -1 to 1 range{% endhighlight %}<p>
+        We now need to specifiy our rays & their places in the "world", so now we create a ray origin variable to set where the camera point will be at & a ray direction variable to specify which direction we are shooting all of our rays at. Now we are going to use Vector3 which means a vector with 3 dimensions XYZ (remember everything we said before can be easily translated in to 3D by simply extending everything we did in 2D by just adding a 3rd dimension Z)
+        <br>
         </p>
-        
+{% highlight c++ %}glm::vec3 rayOrigin(0,0,2);      //Why not (0,0,0)?
+glm::vec3 rayDirection(fragCoord.x,fragCoord.y,-1); //Try to think logically what is happening here?{% endhighlight %} 
+        <p>First try to think of the answers that I typed into the comments before proceeding, it serves to help you understand without mindlessly reading. If our ray origin was the true origin Vector3 (0,0,0) then what would actually happen is that our whole screen will be what color is being returned from the discriminant because we are INSIDE the sphere, so what do we do? We go back 2 units (In this case 2 units can be forward but we are going to stick to flipping them since OpenGL does things this way). Going back 2 units will place the camera 2 units behind the center origin 0,0,0 which is actually where our sphere is at with a radius of 0.5. And then we specifiy a Ray Direction to go forward in the Z direction -1 (again OpenGL does things this way so we are going to follow).<br>
+        Quick Rule to the Z Axis in our program the forward Z will be negative & the positive will be backwards.<br>
+        <br>
+        Now we need to raytrace our sphere, which needs the whole quadratic equation we had going on in the previous section, to add it in the PerPixel function to get the discriminant because the discriminant needs the 3 coefficients from the quadratic equation (More information on the left, explanation on the right).<br>
+        </p>
     </div>
 </div>
+
+
+<div class="side-by-side">
+    <div class="toleft">
+    <p>
+    Quadratic formula we are trying to get to: <br>
+(bx<sup>2</sup> + by<sup>2</sup>)t<sup>2</sup> + (2(axbx + ayby))t + (ax<sup>2</sup> + ay<sup>2</sup> - r<sup>2</sup>) = 0 <br>
+3D varient is :<br>
+(bx<sup>2</sup> + by<sup>2</sup> + bz<sup>2</sup>)t<sup>2</sup> + (2(axbx + ayby + azbz))t + (ax<sup>2</sup> + ay<sup>2</sup> + az<sup>2</sup> - r<sup>2</sup>) = 0<br>
+REMEMBER WE DONT CARE ABOUT THE 3RD DIMENSION. I will continue in 2D since its simpler and all we need to do to extend it to 3D is literally just add a 3rd axis THATS IT. Take the concept thats the most important thing right now.
+Their coefficients are like so: <br>
+<mark>
+&emsp; a coefficient is (bx<sup>2</sup> + by<sup>2</sup>) &emsp;<br>
+&emsp; b coefficient is (2(axbx + ayby)) &emsp;<br>
+&emsp; c coefficient is (ax<sup>2</sup> + ay<sup>2</sup> - r<sup>2</sup>) &emsp;<br>
+</mark>
+Getting the coefficients by doing the following below:<br>
+{% highlight c++ %}float a = glm::dot(rayDirection, rayDirection);
+float b = 2.0f * glm::dot(rayOrigin, rayDirection);
+float c = glm::dot(rayOrigin, rayOrigin) - radius * raidus;{% endhighlight %}
+</p>
+    </div>
+
+    <div class="toright">
+    <p>
+    Explanation on how we got a, b & c.<br>
+    a is the ray origin | b is the ray direction | r is the radius. <br>
+    We can get a coefficient by doing the standard according to the formula to the left:<br>
+    rayDirection.x * rayDirection.x + rayDirection.y * rayDirection.y + rayDirection.z * rayDirection.z<br>
+    But what is this line? Just a dot product, so in code we can just specificy the a to be a dot product of itself. Here is the dot product formula from <a href="https://www.mathsisfun.com/algebra/vectors-dot-product.html" target="_blank">MathIsFun</a><br>
+    a · b = ax * bx + ay * by <br>
+    In 3D it would be a · b = ax * bx + ay * by + az * bz <br>
+    Hopefully that makes sense as to why we are using the dot product here & the rest should be self explanitory with substituting the remaining variables such as the radius and the 2 in the b coefficient.
+    </p>
+    </div>
+</div>
+
+## The First Raytraced 3D Sphere 🎉🎉🎉
+
+Officially wrote my first raytraced 3D Sphere I will also include the next section to visualize this raytracer & whats going on in this program in a better light / prespective with real individual rays that you can see, I hope you stick around.
 
 ---
 <a name="Visualize_Raytracing"></a>
