@@ -28,13 +28,13 @@ are extreme to enter, but hey this is just my list :).</p>
 
 
 <h2>My Planned Roadmap</h2>
-
+<p>
 <li>Write my first Raytracer</li>
 <li>Learn OpenGL</li>
 <li>Render a Mesh with lighting</li>
 <li>Make a Minecraft Simulator</li>
 <li>Improve at writing Shaders</li>
-
+</p>
 
 <h2>Skills</h2>
 
