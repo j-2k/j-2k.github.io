@@ -1,5 +1,5 @@
 ---
-title: "My First Raytracing Project"
+title: "📷 Raytracing Project"
 layout: post
 date: 2023-04-04 08:19
 tag: graphics

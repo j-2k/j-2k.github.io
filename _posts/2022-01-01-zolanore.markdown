@@ -1,0 +1,48 @@
+---
+title: ":crossed_swords: Zolanore :shield:"
+layout: post
+date: 2022-01-01 12:34
+tag: game
+image: /assets/projects/zolanore/z-scene-1.jpg
+headerImage: true
+projects: true
+#hidden: true # don't count this post in blog pagination
+description: "This is a simple and minimalist template for Jekyll for those who likes to eat noodles."
+category: project
+author: juma
+externalLink: false
+---
+
+<div class="side-by-side">
+    <div class="toleft">
+    <iframe width="500" height="281" src="https://www.youtube.com/embed/0fI5QLxO1Lo" frameborder="0" allowfullscreen></iframe>
+    <figcaption class="caption">Gameplay of Zolanore</figcaption>
+    </div>
+
+    <div class="toright">
+    <img class="image" src="/assets/projects/zolanore/z-intro.jpg" alt="z-intro">
+    <figcaption class="caption">Zolanore Cover</figcaption>
+    </div>
+</div>
+
+<div class="side-by-side">
+    <div class="toleft">
+    <img class="image" src="/assets/projects/zolanore/z-scene-2.png" alt="z-scene-2">
+    <figcaption class="caption">Secret Boss Level</figcaption>
+    </div>
+
+    <div class="toright">
+    <img class="image" src="/assets/projects/zolanore/z-scene-3.png" alt="z-scene-3">
+    <figcaption class="caption">Starting Zone</figcaption>
+    </div>
+</div>
+
+---
+
+[Zolanore on Itch.io](https://j-2k.itch.io/zolanore)
+
+Zolanore is an Action, Adventure, RPG game, which also has no real "ending" but the goal would be to fight the hidden boss. Level up as you kill enemies and spend points increasing your character stats. The game also features lofi-like music to immerse the user into the colourful environment.
+
+Check the Itch.io page for contributors.
+
+
