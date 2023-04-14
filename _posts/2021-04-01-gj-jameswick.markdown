@@ -2,7 +2,7 @@
 title: "Boss Bunny Game Jam — :detective: James Wick"
 layout: post
 date: 2021-04-01 12:00
-tag: jekyll
+tag: gamejam
 image: /assets/jams/jameswick/jw-scene-1.png
 headerImage: true
 codejams: true

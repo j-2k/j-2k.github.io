@@ -2,7 +2,7 @@
 title: "Global Game Jam — :robot: Skill Crisis"
 layout: post
 date: 2021-01-01 12:00
-tag: jekyll
+tag: gamejam
 image: /assets/jams/skillcrisis/sk-scene-1.png
 headerImage: true
 codejams: true
