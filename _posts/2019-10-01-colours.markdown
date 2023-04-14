@@ -1,0 +1,48 @@
+---
+title: ":large_blue_diamond: Colours :large_orange_diamond:"
+layout: post
+date: 2019-10-01 12:34
+tag: game
+image: /assets/projects/colours/c-scene-2.png
+headerImage: true
+projects: true
+#hidden: true # don't count this post in blog pagination
+description: "This is a simple and minimalist template for Jekyll for those who likes to eat noodles."
+category: project
+author: juma
+externalLink: false
+---
+
+<div class="side-by-side">
+    <div class="toleft">
+    <iframe width="500" height="281" src="https://www.youtube.com/embed/_IWgdufkYg0" frameborder="0" allowfullscreen></iframe>
+    <figcaption class="caption">Gameplay of Zolanore</figcaption>
+    </div>
+
+    <div class="toright">
+    <img class="image" src="/assets/projects/colours/c-intro.png" alt="c-intro">
+    <figcaption class="caption">Colours Cover</figcaption>
+    </div>
+</div>
+
+<div class="side-by-side">
+    <div class="toleft">
+    <img class="image" src="/assets/projects/colours/c-scene-1.png" alt="c-scene-2">
+    <figcaption class="caption">Colours Map 1</figcaption>
+    </div>
+
+    <div class="toright">
+    <img class="image" src="/assets/projects/colours/c-scene-3.png" alt="c-scene-3">
+    <figcaption class="caption">Colours Map 2</figcaption>
+    </div>
+</div>
+
+---
+
+[Colours on Itch.io](https://designed-by-jonas.itch.io/colours)
+
+Colours is a fast paced isometric combat arena game. Players have to face off against each other in a closed level with the goal of defeating the other player. The game was awarded the Best Games Project at SAE Institute Dubai's Student showcase in December 2019.
+
+Check the Itch.io page for contributors.
+
+

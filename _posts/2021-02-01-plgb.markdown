@@ -1,0 +1,51 @@
+---
+title: "🏃💨 Pablo Let's Go Bar!"
+layout: post
+date: 2021-02-01 12:34
+tag: game
+image: /assets/projects/plgb/p-cover.jpg
+headerImage: true
+projects: true
+#hidden: true # don't count this post in blog pagination
+description: "PLGB Game"
+category: project
+author: juma
+externalLink: false
+---
+
+<div class="side-by-side">
+    <div class="toleft">
+    <iframe width="500" height="281" src="https://www.youtube.com/embed/9McBQ59nL5M" frameborder="0" allowfullscreen></iframe>
+    <figcaption class="caption">Gameplay of Pablo Let's Go Bar!</figcaption>
+    </div>
+
+    <div class="toright">
+    <img class="image" src="/assets/projects/plgb/p-menu.png" alt="plgb-intro">
+    <figcaption class="caption">PLGB Menu</figcaption>
+    </div>
+</div>
+
+<div class="side-by-side">
+    <div class="toleft">
+    <img class="image" src="/assets/projects/plgb/p-scene-1.png" alt="plgb-scene-2">
+    <figcaption class="caption">Ingame Image of PLGB</figcaption>
+    </div>
+
+    <div class="toright">
+    <img class="image" src="/assets/projects/plgb/p-scene-2.png" alt="plgb-scene-3">
+    <figcaption class="caption">Ingame Image of PLGB</figcaption>
+    </div>
+</div>
+
+---
+
+[Pablo Let's Go Bar! on Itch.io](https://flamencoman.itch.io/projectplgb)<br>
+[Pablo Let's Go Bar! on Steam](https://store.steampowered.com/app/1676180/Pablo_Lets_Go_Bar/)
+
+This project was also awarded best games project showcase of year 2021.
+
+A co-op roguelike First Person Shooter (FPS) game where the player has to get through the map by killing enemies in his way, picking up random weapons, and gaining random perks. He fights his way from street to street to get to the bar, bring some friends or go it alone and enjoy a hell of a journey.
+
+By the Knotgames Team
+
+
