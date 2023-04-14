@@ -1,0 +1,50 @@
+---
+title: "🎭 Mirrors ❤️ My first game using a 3D Engine ❤️"
+layout: post
+date: 2019-05-01 12:34
+tag: game
+image: /assets/projects/mirrors/m-scene4.png
+headerImage: true
+projects: true
+#hidden: true # don't count this post in blog pagination
+description: "My first game ever in unity"
+category: project
+author: juma
+externalLink: false
+---
+
+<div class="side-by-side">
+    <div class="toleft">
+    <img class="image" width= "500" height="324" src="/assets/projects/mirrors/m-scene1.png" alt="m-scene1">
+    <figcaption class="caption">Intro to Mirrors</figcaption>
+    </div>
+
+    <div class="toright">
+    <img class="image" src="/assets/projects/mirrors/m-scene2.png" alt="m-scene2">
+    <figcaption class="caption">Hidden Key in Mirrors</figcaption>
+    </div>
+</div>
+
+<div class="side-by-side">
+    <div class="toleft">
+    <img class="image" src="/assets/projects/mirrors/m-scene3.png" alt="m-scene3">
+    <figcaption class="caption">Starting Level</figcaption>
+    </div>
+
+    <div class="toright">
+    <img class="image" src="/assets/projects/mirrors/m-scene5.png" alt="m-scene5">
+    <figcaption class="caption">Puzzle Door</figcaption>
+    </div>
+</div>
+
+---
+
+<strong>I solely placed this project in my website for personal reasons, this is my first ever game I have created in Unity & was very happy when I completed it at the time.</strong>
+
+Mirrors is a adventure & puzzle game features the player with a ally that looks the same as himself the player and the ally need to get out of the dimension they have been placed in.
+
+Funnily enough I used these 2 songs for the game Old RuneScape Soundtrack: Harmony & The X Files Theme Song. It's probably the feeling of the song harmony that makes you feel like a kid again when playing a game.
+
+Everything about the code structure of this game is horrid since its my first game & was learning but if you really want to see it click that > [Mirrors on Github](https://github.com/j-2k/PRPG). Project was made in Unity 2018.4 LTS.
+
+

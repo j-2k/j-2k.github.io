@@ -1,0 +1,50 @@
+---
+title: "🕴️ The Intrepid Hancock 💎"
+layout: post
+date: 2020-02-01 12:34
+tag: game
+image: /assets/projects/tih/i-header.png
+headerImage: true
+projects: true
+#hidden: true # don't count this post in blog pagination
+description: "TIH Game Description"
+category: project
+author: juma
+externalLink: false
+---
+
+<div class="side-by-side">
+    <div class="toleft">
+    <iframe width="500" height="700" src="https://www.youtube.com/embed/FXXhBOxamfQ" frameborder="0" allowfullscreen></iframe>
+    <figcaption class="caption">Gameplay of The Intrepid Hancock</figcaption>
+    </div>
+
+    <div class="toright">
+    <img class="image" src="/assets/projects/tih/i-cover.png" alt="z-intro">
+    <figcaption class="caption">The Intrepid Hancock Cover</figcaption>
+    </div>
+</div>
+
+<div class="side-by-side">
+    <div class="toleft">
+    <img class="image" src="/assets/projects/tih/i-scene-1.png" alt="i-scene-1">
+    <figcaption class="caption">Enemy Butlers</figcaption>
+    </div>
+
+    <div class="toright">
+    <img class="image" src="/assets/projects/tih/i-scene-2.png" alt="i-scene-2">
+    <figcaption class="caption">Artifacts</figcaption>
+    </div>
+</div>
+
+---
+
+[The Intrepid Hancock on Itch.io](https://flamencoman.itch.io/the-intre)
+
+Had a bad day? De-stress by playing this simulation of wreaking havoc and getting rewarded for it! Need the thrill of getting chased while doing something suuuuuuper illegal? Run and hide from enemy NPCs while breaking things! Want to admire the beauty of chaos? Watch how various objects react to your destruction!
+
+Join the legendary treasure hunter Hancock as he roams a medieval-like dungeon in search of the all-powerful fragments of an ancient relic, simply known as the Artefact. Good luck not getting caught!
+
+Check the Itch.io page for contributors & more information on the game.
+
+

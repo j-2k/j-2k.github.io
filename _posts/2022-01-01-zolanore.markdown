@@ -1,5 +1,5 @@
 ---
-title: ":crossed_swords: Zolanore :shield:"
+title: "⚔️ Zolanore 🌪️"
 layout: post
 date: 2022-01-01 12:34
 tag: game
@@ -40,6 +40,8 @@ externalLink: false
 ---
 
 [Zolanore on Itch.io](https://j-2k.itch.io/zolanore)
+
+[Open Source Zolanore Project on Github](https://github.com/j-2k/zolanore)
 
 Zolanore is an Action, Adventure, RPG game, which also has no real "ending" but the goal would be to fight the hidden boss. Level up as you kill enemies and spend points increasing your character stats. The game also features lofi-like music to immerse the user into the colourful environment.
 
