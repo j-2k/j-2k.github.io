@@ -1,5 +1,5 @@
 ---
-title: "UAE Hackathon — 🇦🇪 Digital Runners Project"
+title: "UAE Hackathon — 🌃 Digital Runners Project"
 layout: post
 date: 2023-02-27 8:00
 tag: gamejam
@@ -27,6 +27,6 @@ externalLink: false
 
 ---
 
-This is a Hackathon project done in 2 days during the UAE Hackathon held by TDRA (Telecommunications & digital government regulatory authority), I was in the team Digital Runners representing Dubai Digital Authority.
+This is a Hackathon project done for the UAE Hackathon held by TDRA (Telecommunications & digital government regulatory authority), I was in the team Digital Runners representing Dubai Digital Authority.
 
-The project is about property investments using metaverse, however I can't talk too much about it since it's a relatively secretive project idea from the team of designers. But, all I can say about here is that I was the main developer of the project working on the whole pipeline & did everything from using shaders & implementing everyones ideas into the project.
+The project is about viewing property using metaverse, however I can't talk more about it since it's a secretive idea & my colleagues asked this idea to be kept private. But, all I can say about it here is that I was the main developer of the project working on the whole pipeline & did everything from using shaders & implementing everyones ideas into the project.
