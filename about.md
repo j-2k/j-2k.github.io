@@ -23,7 +23,7 @@ is definitly what I enjoy doing the most, no regrets.</p>
 it's the most fun I had programming in a while. I want to get better at any shading language
 to write good shaders & work with atleast one graphics specification such as OpenGL, DirectX, & Vulkan.
 My favourite companies / places I dream to work at would be any triple-A games company
-such as Blizzard, Valve, & Riot. Nvidia also sounds like a fun place to work at but the requirements
+such as Blizzard, Ubisoft, Valve, & Riot. Nvidia also sounds like a fun place to work at but the requirements
 are extreme to enter, but hey this is just my list :).</p>
 
 
