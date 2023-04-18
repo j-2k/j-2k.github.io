@@ -34,7 +34,7 @@ are extreme to enter, but hey this is just my list :).</p>
 	<li>Render a Mesh with lighting</li>
 	<li>Make a Minecraft Simulator</li>
 	<li>Improve at writing Shaders</li>
-	<li><a href="https://github.com/j-2k/GraphicsProgrammingRoadmap">My Graphics Roadmap on Github</a></li></li>
+	<li><a href="https://github.com/j-2k/GraphicsProgrammingRoadmap">My Graphics Roadmap on Github</a></li>
 </ul>
 
 <h2>Skills</h2>
@@ -52,7 +52,7 @@ are extreme to enter, but hey this is just my list :).</p>
 	<li>Backend Stuff (MongoDB/Express/NJS/Heroku)</li>
 </ul>
 
-<h5>Other Links</h5>
+<h3>Other Links</h3>
 <ul>
 	<li><a href="https://j-2k.github.io">Click here to go back to my home page</a></li>
 	<li><a href="https://sites.google.com/view/juma-abdulla-portfolio/games-developed">Old portfolio page</a></li>
