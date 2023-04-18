@@ -26,15 +26,16 @@ My favourite companies / places I dream to work at would be any triple-A games c
 such as Blizzard, Ubisoft, Valve, & Riot. Nvidia also sounds like a fun place to work at but the requirements
 are extreme to enter, but hey this is just my list :).</p>
 
+<h2>My Planned Roadmap (Graphics)</h2>
 
-<h2>My Planned Roadmap</h2>
-<p>
-<li>Write my first Raytracer</li>
-<li>Learn OpenGL</li>
-<li>Render a Mesh with lighting</li>
-<li>Make a Minecraft Simulator</li>
-<li>Improve at writing Shaders</li>
-</p>
+<ul class="skill-list">
+	<li>Write my first Raytracer</li>
+	<li>Learn OpenGL</li>
+	<li>Render a Mesh with lighting</li>
+	<li>Make a Minecraft Simulator</li>
+	<li>Improve at writing Shaders</li>
+	<li><a href="https://github.com/j-2k/GraphicsProgrammingRoadmap">My Graphics Roadmap on Github</a></li></li>
+</ul>
 
 <h2>Skills</h2>
 
@@ -51,9 +52,8 @@ are extreme to enter, but hey this is just my list :).</p>
 	<li>Backend Stuff (MongoDB/Express/NJS/Heroku)</li>
 </ul>
 
-<h2>Projects</h2>
-
+<h5>Other Links</h5>
 <ul>
-	<li><a href="https://sites.google.com/view/juma-abdulla-portfolio/games-developed">Old portfolio page with all my projects</a></li>
-	<li><a href="https://github.com/j-2k/Zolanore">Zolanore On Github</a></li>
+	<li><a href="https://j-2k.github.io">Click here to go back to my home page</a></li>
+	<li><a href="https://sites.google.com/view/juma-abdulla-portfolio/games-developed">Old portfolio page</a></li>
 </ul>
