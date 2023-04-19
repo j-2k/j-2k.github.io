@@ -452,7 +452,109 @@ Officially wrote my first raytraced 3D Sphere I will also include the next secti
 
 ## Visualize Raytracing in Unity :earth_asia::eyes:
 
-***I tried to visualize my raytracer in Unity, here's my take on it***
+***I tried to visualize my raytracer in Unity, here's my take on it***<br>
+[Click here to access this repository on Github](https://github.com/j-2k/VisualizeRaytracingInUnity)
+
+<p style="text-align: center;">FRONT VIEW</p>
+<div class="side-by-side">
+    <div class="toleft">
+    <img class="image" src="/assets/raytracingproj/rtu-uvrays1.png" alt="rtuv1">
+    <figcaption class="caption">Front view of UVs bottom left is 0,0 (black) top right is 1,1 (yellow)<br>
+    NOT TO BE MIXED WITH REMAPPING/CENTERING COORDINATES<br>
+    Also please ignore the weird drawing order that unity does with their lines</figcaption>
+    </div>
+
+    <div class="toright">
+    <img class="image" src="/assets/raytracingproj/rtu-uvrays2.png" alt="rtuv2">
+    <figcaption class="caption">Ray density decreased to view the 2 gizmo spheres<br>
+    Blue sphere = point from where we cast rays & White sphere = raytraced sphere<br>
+    Also please ignore the weird drawing order that unity does with their gizmos</figcaption>
+    </div>
+</div>
+<p style="text-align: center;">BACK VIEW<br>
+This part is to visualize the difference of coordinate mapping with (0 -> 1) to (-1 -> 1) remapping we did a before on the Mona Lisa Example</p>
+<div class="side-by-side">
+    <div class="toleft">
+    <img class="image" src="/assets/raytracingproj/rtu-buvrays.png" alt="rtbuv1">
+    <figcaption class="caption">UV Back view of the raytracer however with very little density<br></figcaption>
+    </div>
+
+    <div class="toright">
+    <img class="image" src="/assets/raytracingproj/rtu-buvrays01.png" alt="rtbuv2">
+    <figcaption class="caption">Same picture from the left except this section doesn't implement the remapping algorithim of coord * 2 - 1</figcaption>
+    </div>
+</div>
+
+Let us begin by first talking about how to draw rays, we are going to use Unitys built in Debug.DrawLine. Since it's a line function we are going to input 2 values first the initial position & then the final position. <br>
+{% highlight c# %}Debug.DrawLine(rayOrigin, rayOrigin + rayDir * length, mainCol);{% endhighlight %}
+Now the biggest barrier is how we create everything here that we need? I just literally import everything I had in the previous project to unity just a big copy paste block and change everything to fit Unity parameters. Check the left side section to see the code. Im not going to re-explain anything here because it's just a copy paste from the previous section you can see how close both are.
+
+<div class="side-by-side">
+    <div class="toleft">
+    {% highlight c# %}
+void Update(){
+for (int y = 0; y < height; y++){
+    for (int x = 0; x < width; x++){
+        Vector2 coord = new Vector2((float)x / (float)width, (float)y / (float)height);
+        coord.x = (coord.x * 2f - 1f);
+        coord.y = (coord.y * 2f - 1f);
+        Vector3 rayOrigin = new Vector3(0, 0, (forwardOffset)); //Mathf.Abs(forwardOffset));
+        Vector3 rayDir = new Vector3(coord.x, coord.y, -1.0f);
+
+        float a = Vector3.Dot(rayDir, rayDir);
+        float b = 2.0f * Vector3.Dot(rayDir, rayOrigin);
+        float c = Vector3.Dot(rayOrigin, rayOrigin) - (radius * radius);
+
+        float discriminant = (b * b) - (4f * a * c);
+        if (discriminant >= 0.0f)
+        {
+            //return 0xff00ffff; abgr rgba
+            mainCol = new Color(1,1,1,1);
+        }
+        else
+        {
+            //return 0xff000000;
+            mainCol = new Color(0,0,0, root0Alpha);
+        }
+        //return 0xff000000;
+        Debug.DrawLine(rayOrigin, rayOrigin + rayDir * length, mainCol);
+    }
+}{% endhighlight %}
+    </div>
+
+    <div class="toright">
+        <img class="image" src="/assets/raytracingproj/rtu-sphere-2-1.png" alt="rtsphere21">
+    <figcaption class="caption">The result of the implementation to the left with all default values of origin Z-axis = +2 & direction of Z-axis = -1 with length of 2</figcaption>
+    </div>
+</div>
+
+<div class="side-by-side">
+    <div class="toleft">
+        <img class="image" src="/assets/raytracingproj/rtu-sphere-2-2.png" alt="rtsphere22">
+    <figcaption class="caption">Different view to see rays better (Same picture & different angle of picture on top right)<br></figcaption>
+    </div>
+
+    <div class="toright">
+    <img class="image" src="/assets/raytracingproj/rtu-forward-1.png" alt="rtspheref1">
+    <figcaption class="caption">Moving the ray origin to be -1 instead of -2 (More rays are white which means closer to the sphere)</figcaption>
+    </div>
+</div>
+
+<div class="side-by-side">
+    <div class="toleft">
+        <img class="image" src="/assets/raytracingproj/rtu-forward-4.png" alt="rtspheref4">
+    <figcaption class="caption">Moving the ray origin to be -4 instead of -2 (Less rays are white which means we are far to the sphere)</figcaption>
+    </div>
+
+    <div class="toright">
+    <p>So this is basically our raytracer, literally there are rays that hit the sphere that is colored & rays that dont hit the sphere are black JUST LIKE OUR PROGRAM. This is literally the same exact thing that is going on, now this is still very medicore since we didn't address aspect ratio everything is in the 1:1 aspect ratio & increasing the parameter for height & width will just increase the density of the rays & vice versa. So now lets address how we do aspect ratio implementation since we didn't do it in our program. <br>
+    <br>
+    I also hope that this section is already enough to see how a raytracer actually works by just blasting rays from a single point & seeing if it intersects something but yeah this is literally how it looks like in a 3D prespective compared to our "2D" like view in the raytracing project.<br>
+    <br>
+    Diving into aspect ratio, it's very simple.
+    </p>
+    </div>
+</div>
 
 ---
 
