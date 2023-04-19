@@ -544,6 +544,12 @@ for (int y = 0; y < height; y++){
     <div class="toleft">
         <img class="image" src="/assets/raytracingproj/rtu-forward-4.png" alt="rtspheref4">
     <figcaption class="caption">Moving the ray origin to be -4 instead of -2 (Less rays are white which means we are far to the sphere)</figcaption>
+    <br>
+    <br>
+    <p>Also everything is flat in terms of where the rays land, so lets try to maybe visualize where our rays actually hit the sphere & make it more visually appealing.<br>
+    <br>
+    We will do this in the next section below.
+    </p>
     </div>
 
     <div class="toright">
@@ -551,7 +557,9 @@ for (int y = 0; y < height; y++){
     <br>
     I also hope that this section is already enough to see how a raytracer actually works by just blasting rays from a single point & seeing if it intersects something but yeah this is literally how it looks like in a 3D prespective compared to our "2D" like view in the raytracing project.<br>
     <br>
-    Diving into aspect ratio, it's very simple.
+    Diving into aspect ratio, it's very simple. We take our current width divide it by the height we get a scaler value & with this value we multiply the coordinate of the X axis with the result of the division previously. This will give you aspect ratio support, feeding in the values of height 192 x 108 width (native resolution / 10) will give you a 16:9 ratio with the amount of pixels or RAYS in our case, provided in the height & width like any real program.
+{% highlight c# %}float aspectRatio = (float)width/(float)height;
+coord.x *= aspectRatio;{% endhighlight %}
     </p>
     </div>
 </div>
