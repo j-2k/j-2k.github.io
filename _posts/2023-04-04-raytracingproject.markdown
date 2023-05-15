@@ -31,6 +31,8 @@ externalLink: false
 2. [Mathematics Required](#Math_1) (Circle (2D) Intersection explanation)
 3. [Rendering My First Sphere](#Rendering_Sphere) 
 4. [Visualize Raytracing in Unity](#Visualize_Raytracing) (Small detour to see how a raytracer "looks" like)
+5. [Shading & Rendering Multiple Spheres](#Shading_Multiple)
+6. Upcoming...
 
 to be continued...
 
@@ -564,7 +566,115 @@ coord.x *= aspectRatio;{% endhighlight %}
     </div>
 </div>
 
----
+### Hit Distances!... or Magnitudes if you are fancy
 
+So how do we continue on our current work to actually see where the rays hit the sphere? This part is actually pretty easy since we already did all the heavy lifting before, since we have the discriminant we just continue on solving the quadratic formula.  
+(-𝒃 ± sqrt(𝒃<sup>2</sup> - 4𝒂𝒄))/2𝒂 (we already have the discriminant so it would look like this in code)  
+
+{% highlight c# %}float t0 = (-𝒃 - Mathf.Sqrt(discriminant)) / (2.0f * a)
+float t1 = (-𝒃 + Mathf.Sqrt(discriminant)) / (2.0f * a){% endhighlight %}
+
+With this done we have our hit positions, however you might notice it is just a float & that is correct we just want a scalar since we can just scale the distance to the point of where we hit the sphere. Continuing this we store the hit point in a Vector3 to visualize it in our program like so.
+
+{% highlight c# %}{
+    Vector3 hitPos = rayOrigin + rayDir * t0;
+    //Ignore These
+    /*Vector3 normal = hitPos - sphereOrigin;
+    normal.Normalize();
+    if (!reloadHitGizmos) // Adding hit positions to be displayed by gizmos
+    {
+        hitPositionsListT0.Add(hitPos);
+        normalsListT0.Add(normal);
+    }*/
+}
+{
+    Vector3 hitPos = rayOrigin + rayDir * t1;
+    //Ignore These
+    /*Vector3 normal = hitPos - sphereOrigin;
+    normal.Normalize();
+    if (!reloadHitGizmos) // Adding hit positions to be displayed by gizmos
+    {
+        hitPositionsListT1.Add(hitPos);
+        normalsListT1.Add(normal);
+    }*/
+}{% endhighlight %}
+
+Now we have all the hit positions on the sphere, all we have to do is now draw the gizmos, you can do it anyway you'd like since you just have to show the hitPos, example of drawing a cube at the position of the hitPos Vec3 variable will give you something like the pictures below!
+
+
+
+<div class="side-by-side">
+    <div class="toleft">
+        <img class="image" src="/assets/raytracingproj/rtu-hitdist-1.png" alt="rt-hitsphere1">
+    <figcaption class="caption">Hit Distances Visualized with a 16:9 ratio with resolution of 192 x 108.</figcaption>
+    </div>
+
+    <div class="toright">
+<img class="image" src="/assets/raytracingproj/rtu-hitdist-2.png" alt="rt-hitsphere2">
+    <figcaption class="caption">Another view of the hit distances being visualized.</figcaption>
+    </div>
+</div>
+
+We now finally have a sphere! We can also add more stuff to this such as lighting I will quickly explain how to do it.
+First we need the normals of the sphere, (If you dont know what a normal is [check this out on wikipedia](https://en.wikipedia.org/wiki/Normal_(geometry)), basically it's a vector that is perpendicular to the surface (the hit positions in our case)) how do we get normals in this case? It's very simple since its a sphere, but think about it we need a vector to go out from every "face" of the sphere. Since It's a sphere imagine you blast rays from the origin of the sphere to the hit positions what do you get? Sphere normals (the ignore lines above show this calculation, ill show it again below).
+
+{% highlight c# %}Vector3 normal = hitPos - sphereOrigin;
+normal.Normalize();{% endhighlight %}
+
+Now we have normals lets handle lights! Check the figure below to help yourself understand all the vector math that is going on, which is needed for lights.
+
+
+<div class="side-by-side">
+    <div class="toleft">
+        <iframe src="https://www.desmos.com/calculator/oukabsyfjv?embed" width="500" height="500" style="border: 1px solid #ccc" frameborder=0></iframe>
+    </div>
+
+    <div class="toright">
+    <p>
+    I will show this with a circle since its easier to visualize, the blue line will be our normal, the black line will be our hit positions, & the orange line will be the light direction.<br>
+    Lets specify the light direction, in the image it just looks like a long line but we need explicity state its direction.<br>
+    Lets imagine the light going from top left to bottom right (THAT MEANS THE LIGHT DIRECTION IS (1,-1)). Now lets compare a normal to our light direction with the dot product (THEY ARE THE SMALL LINES YOU CAN SEE AT THE IMAGE ON THE LEFT EXACTLY HAPPENING TWICE ON THE TOP LEFT QUADRANT AND THE BOTTOM RIGHT QUADRANT).<br>
+<br>
+    Comparing 2 vectors with the dot product will give you a value of 1 to -1 assuming everything is normalized. However, we didnt address one thing which is the problem with our light direction we actually need to flip it because of how the dot product works. Check the image below to see the current light vector and the inverted one on the left which is the correct version.
+
+    Again remember the blue is the normal, orange is our light direction, black is our hit positions or the "Sphere/Circle".
+    Images are not to scale & assume everything is normalized.
+    </p>
+    </div>
+</div>
+
+<div class="side-by-side">
+    <div class="toleft">
+        <img class="image" src="/assets/raytracingproj/rtu-lightdot2.png" alt="rtudrawlightdot2">
+        <figcaption class="caption">Again repeating the same description on the right image, but this time we INVERT the light direction & this will give us a nice angle shown above, this will return a scalar that is positive close to the maximum value of 1.</figcaption>
+    </div>
+
+    <div class="toright">
+    <img class="image" src="/assets/raytracingproj/rtu-lightdot1.png" alt="rtudrawlightdot1">
+    <figcaption class="caption">Here is a normal vector and a light direction vector both being compared using a dot product. The green vector AFTER the red dot is actually what we are using to compare to the normal vector this isn't correct and will yield you a value that is negative.</figcaption>
+    </div>
+</div>
+
+To invert the light direction we simply just prefix it with a negative sign (think of it as multiplying a vector by -1).
+{% highlight c# %}float lightIntensity = Mathf.Max(Vector3.Dot(normalsListT0[i], -mainLight.transform.forward),0);{% endhighlight %}
+We use Mathf.Max to just make sure the value isn't going under 0 since we just need the 1 to 0 range since its going to be used as a color intensity factor. With this lightIntensity variable we just multiple our final color to this scalar and we get the following below. (I extended mine to take direction from the light object you see me controlling but the concept is literally the same)
+
+<center>
+<img class="image" src="/assets/raytracingproj/rtu-basiclightingwithnormals.gif" alt="rtushadinggif">
+<figcaption class="caption">Extending the raytracer to support simple lighting. Sun Direction now affects the direction of which the sphere is lit.</figcaption>
+</center>
+<br>
+I hope that this was not too overwhelming, & if you would check this out in unity click [here](https://github.com/j-2k/VisualizeRaytracingInUnity) & download the repository to play (check the read me section for instructions).
+
+
+---
+<a name="Shading_Multiple"></a>
+
+
+## Shading & Rendering Multiple Spheres
+
+
+
+---
 
 [Click here to go back to my home page](https://j-2k.github.io).
