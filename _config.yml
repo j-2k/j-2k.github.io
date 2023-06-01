@@ -111,7 +111,7 @@ defaults:
       hidden: false
 
 markdown: kramdown
-
+mathjax: true
 
 plugins:
   - jekyll-seo-tag

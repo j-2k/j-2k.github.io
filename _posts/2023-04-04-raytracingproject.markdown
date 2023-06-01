@@ -208,14 +208,17 @@ I loved this segment so much because of the low level part since I never was REA
     </div>
 </div>
 
+
 <div markdown="1">
 Testing MD & Mathjax please ignore & skip to the next section below.
 
 $$x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$$
 
 </div>
+
 \\(x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}\\)
 \\[x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}\\]
+
 
 ### Circles & Square Root Magic
 
