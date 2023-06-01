@@ -197,7 +197,7 @@ I loved this segment so much because of the low level part since I never was REA
         Looking at the image below the first graph, that is exactly what you would get, even though I said its a quote on quote ray under the graph its important to know that in order to differentiate between a line and a ray is that at the end of a ray you would place a arrowhead to show where the ray is pointing towards its direction. I cant show this in desmos so I placed some lines to fake an arrowhead look. <mark>Dont forget a ray contains a origin & a direction!</mark><br>
         <br>
         Quickly, the formula for the ray on the left is the following: <br>
-        𝑷<sub>𝒙𝒚</sub> = 𝒂<sub>𝒙𝒚</sub> + 𝒃<sub>𝒙𝒚</sub>𝑻<br>
+$$P_{xy} = a_{xy} + b_{xy}T$$
         𝑷 for any point along the line<br>
         𝒂 = origin<br>
         𝒃 = direction<br>
