@@ -11,6 +11,7 @@ description: "Raytracing Project Documentation"
 category: project
 author: juma
 externalLink: false
+usemathjax: true
 ---
 
 
@@ -36,6 +37,8 @@ externalLink: false
 
 to be continued...
 
+
+$$x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$$
 
 ---
 <a name="UV_Image"></a>
@@ -201,12 +204,18 @@ I loved this segment so much because of the low level part since I never was REA
         𝑻 = direction scaler<br>
         Substitution: 𝑷<sub>𝒙𝒚</sub> = (0,0) + (5,5)(1), However its also good to know that doing things this way is "bad" we should just normalize the direction vector and just multiply it by the direction scaler. Which looks like this.<br>
         𝑷<sub>𝒙𝒚</sub> = (0,0) + (1,1)(5). With this done it should be known that if you move the origin to lets say (5,5) the whole ray moves to (5,5) & will still point towards the positive 𝒙 𝒚 quadrant (top right or 1,1) with a direction scaler of 5,5 (the tip will be at 10,10).
-        
-        
-
         </p>
     </div>
 </div>
+
+<div markdown="1">
+Testing MD & Mathjax please ignore & skip to the next section below.
+
+$$x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$$
+
+</div>
+\\(x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}\\)
+\\[x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}\\]
 
 ### Circles & Square Root Magic
 

@@ -4,7 +4,6 @@ layout: compress
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     {% if site.analytics-google %}
         {% include analytics-google.html %}
     {% endif %}
@@ -39,7 +38,6 @@ layout: compress
 
     {{ scss_sheet | scssify }}
     </style>
-
 </head>
 <body>
     <div class="wrapper-{% if site.width == "normal" %}normal{% elsif site.width == "large" %}large{% endif %}">
