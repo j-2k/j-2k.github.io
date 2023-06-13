@@ -3,7 +3,7 @@ title: "📷 Raytracing Project"
 layout: post
 date: 2023-04-04 08:19
 tag: graphics
-image: /assets/images/jumapfptest.jpeg
+image: assets/raytracingproj/rt-headerimg.png
 headerImage: true
 projects: true
 #hidden: true # don't count this post in blog pagination
