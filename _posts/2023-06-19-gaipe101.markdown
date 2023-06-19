@@ -111,12 +111,41 @@ The point of this ending was to show that even without a technological backgroun
 
 ---
 
-11:15 AM - Break
+11:35 AM - How AI changes the photography field by Boris Eldagsen
 
+We covered the following topics in general & went over examples of the specifics AI's work:
+GAN (Generative Adversarial Network)
+Diffusion Models - Train the AI with noise & images such that it will be able to create a image starting from a noisy image. Models such as this boom is DALL E2 & GPT3.
+New text to imagery that is great in terms of technology is MidJourney.
+Another model that a personal friend used covered here is Stable Diffusion. A open source model coming from a university in germany.
+
+Anyways the main models being used are: DALL E2, Midjourney, Stable Diffusion (DreamStudio & Opensource), ADOBE Firefly. Each have their own pros & cons! 
+
+Prompt entering is also really important when it comes to wanting to generate a specific result, such as raw prompt vs multi prompt. Examples are DSLR, Photo-realistic, Large round pizza & etc. The best language to choose is english & should be in EN mostly for the most best & accurate result because it was trained on that language. Only to choose other languages when it comes to something specific such as a painting in french or something. Basically, specific english will yield the best results.
+
+Boris suggested using these technologies when you lack certain items needed to make certain pictures such as drones & extremely high quality cameras, but just using a AI to generate these images such as a alleyway in a city, top down street view of a city, deep underwater photos with certain marine life.
+
+We now go over many more other rules for prompting with AI's such as DALL E & Stable Diffusion. A helpful tactic when getting images is staying on the same seed but being more specific to the image that is required. Negative prompting also comes into play by it negating a few amount of terms that you dont want to be in the image. In some cases you can also give weight to a certain text in prompt when getting a image.
+
+As it seems now this is a personal note from me specifically, I feel like Stable Diffusion & Midjourney are extremely good & visually appealing when it comes to generating images that are 1 in good visual fidelity & 2 in good prompt accuracy.
+
+Apparently text in images were something hard to implement before but is now common in models in Stable Diffusion & Adobe Firefly.
+
+He also goes over how to generate images that the material was not trained upon with the AI, He used to ask GPT to explain an image in reference to a certain photo that the AI was not trained with & then the prompt is then given by GPT & is then used to generate a image using that original AI.
+
+Then he goes over examples of the generated images by popular AI models such as Midjourney & Stable Diffusion. As I said previously these 2 are easily the best from what I have seen yet. Another use of this is actually something really useful say that you have a photo that is cutoff at the middle, think of a scenery picture cut in half. You can actually use a model to create the generate the rest of the image, he was able to show case this using DALL E & it also produced great results. Apparently this is mostly for environments not for human based bodies since they create weird results.
+
+Othe useful tools covered are upscaling tools that are really useful for when something is slightly blurry or not really crisp when you generate an image you like.
+
+Licenses when it comes with generated images is that most of them are like so, if you create a image using a AI you can hold the copyright ownership but the creators of the AI are also allowed to use that certain imagery you generated. This is currently Midjourney & DALL E apparently, but licenses should always be extensively searched & studied before hand when considering commercial options.
+
+After this we go to a rabbit hole of license, legal, & copyright issues. But this is all not important to me since you should ALWAYS, look at their current Terms & conditions, & licenses/agreements when you want to make something commercial. If its personal then nobody cares, look at popular sites that summarize legal licenses (I have one in mind but I dont remember the name of that website right now).
 
 ---
 
-11:35 AM - 
+1:00 PM - 1 HR Break, Continue @ 2PM
+
+My personal comments will be inserted here:
 
 
 ---
