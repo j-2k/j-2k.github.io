@@ -5,10 +5,10 @@ date: 2023-06-19 9:00
 tag: course
 image: /assets/images/jumapfptest.jpeg
 headerImage: true
-projects: true
+projects: false
 #hidden: true # don't count this post in blog pagination
 description: "Course on Generative AI & Prompt Engineering 101 (ChatGPT)"
-category: project
+category: blog
 author: juma
 externalLink: false
 ---

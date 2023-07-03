@@ -8,7 +8,7 @@ tag:
 - markdown
 - elements
 star: true
-category: blog
+category: none
 author: juma
 description: Markdown summary with different options
 ---
