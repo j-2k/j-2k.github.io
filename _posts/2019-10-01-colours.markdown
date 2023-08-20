@@ -16,7 +16,7 @@ externalLink: false
 <div class="side-by-side">
     <div class="toleft">
     <iframe width="500" height="281" src="https://www.youtube.com/embed/_IWgdufkYg0" frameborder="0" allowfullscreen></iframe>
-    <figcaption class="caption">Gameplay of Zolanore</figcaption>
+    <figcaption class="caption">Gameplay of Colours</figcaption>
     </div>
 
     <div class="toright">
