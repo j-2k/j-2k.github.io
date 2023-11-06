@@ -56,4 +56,6 @@ are extreme to enter, but hey this is just my list :).</p>
 <ul>
 	<li><a href="https://j-2k.github.io">Click here to go back to my home page</a></li>
 	<li><a href="https://sites.google.com/view/juma-abdulla-portfolio/games-developed">Old portfolio page</a></li>
+	<li><a href="https://sites.google.com/view/jumaimportantonly/gpg230">My Blog on my final university course for games programming</a></li>
+
 </ul>
