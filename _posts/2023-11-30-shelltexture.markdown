@@ -1,7 +1,7 @@
 ---
 title: "🌱 Shell Texturing"
 layout: post
-date: 2023-11-30 07:45
+date: 2023-11-21 07:45
 tag: shaders
 image: /assets/shellcombined.png
 headerImage: true
