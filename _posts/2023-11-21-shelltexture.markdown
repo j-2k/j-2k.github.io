@@ -118,13 +118,13 @@ With this done we can now see the grass base starting with being very dark to go
 To achieve sharp grass we need a way to shave off the blocks starting from the center to the outer section of the block, we can do this with a length function, however before that, we have not addressed our UVs not being properly corrected in local space.  
 Things will start to get a little confusing so please bear with me & excuse my garbage explanation.
 
-*** UV PRIME IS THE UV RESIZED TO 100x100 (0 to 100) & NOT THE DEFAULT 1x1 (0 to 1). Previously in Part 2 I resized the UV & explained it there. ***
+***UV PRIME IS THE UV RESIZED TO 100x100 (0 to 100) & NOT THE DEFAULT 1x1 (0 to 1). Previously in Part 2 I resized the UV & explained it there.***
 
-$$Local \hspace{0.5cm} Space = frac(\vec{UV^{\prime}})$$
+$$Local \hspace{0.25cm} Space = frac(\vec{UV^{\prime}})$$
 
 This will give us a repeating set of UVs on our plane, however, it's not centered thus not optimal to start using our method of making a circle AT the center of the block of grass to cut the grass. To move it we simply do the following coordinate offset of the UV by adding a "* 2 - 1" to the fractional component.
 
-$$\vec{Centered \hspace{0.5cm} UV} =  frac(\vec{UV^{\prime}}) \times 2 - 1$$
+$$\vec{Centered \hspace{0.25cm} UV} =  frac(\vec{UV^{\prime}}) \times 2 - 1$$
 
 Now we finally have centered UVs & it's time to get a circle so we can start cutting the grass based on the radius/length of the circle. By taking the distance of every pixel to our centered UVs we create a circle with the length function.
 
@@ -158,18 +158,18 @@ int cone = ((lenMask * (1 - _Thick )) - ((_SheetIndexNormalized/rng) - _Thick)) 
 ---
 
 ## Part 5 - Lighting
-Lighting is fairly simple we are going to do the traditional lambertian light model *check wiki page* where we reflection is calculated by taking the normal vector & the normalized light direction vector
+Lighting is fairly simple we are going to do the traditional Lambertian light model ***check wiki page*** where we reflection is calculated by taking the normal vector & the normalized light direction vector
 
-*The reflection is calculated by taking the dot product of the surface's unit normal vector N, and a normalized light-direction vector L, pointing from the surface to the light source. This number is then multiplied by the color of the surface and the intensity of the light hitting the surface:*
+*"The reflection is calculated by taking the dot product of the surface's unit normal vector N, and a normalized light-direction vector L, pointing from the surface to the light source. This number is then multiplied by the color of the surface and the intensity of the light hitting the surface:" - Lambertian Reflectance Wiki*
 
-$$Lambert Light =  \vec{N} \cdot  \vec{L}$$
+$$Lambert \hspace{0.25cm} Light =  \vec{N} \cdot  \vec{L}$$
 
 *Very commonly the Light vector might be flipped in that case you just need to multiply the Light vector by -1, similarly done in my raytracer*
 
 Now the only issue is with this lighting model the dark areas are extremely dark & get no light (0 ambient light), & it's currently unclamped which means the light ranges from -1 to 1 and negative light is weird so we clamp the light value to range from 0 to 1.
 Though we still have the dark areas, to fix them we can just add value to upscale it in our case this technique is called a half lambert by Valve, it's where we multiply by 0.5 and add by 0.5, to lighten up the dark areas towards the midsection of the objects shading, this isn't physically based anymore for obvious reasons, but we should't care since looks are more important than being technically correct as said by Acerola. 
 
-$$Half Lambert =  \vec{N} \cdot  \vec{L} \times 0.5 + 0.5$$
+$${\color{white} Half \hspace{0.25cm} Lambert =  \vec{N} \cdot  \vec{L} \times 0.5 + 0.5}$$
 
 After this, Valve squares the Half Lambert value before multiplying it in the final color calculation to  see the difference between the shaded & lit areas.
 
