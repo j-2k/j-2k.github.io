@@ -71,7 +71,7 @@ i decimal = normalized shell texture index  (ACEROLA CALLES THIS THE HEIGHT BUT 
 
 $$\vec{V} = \vec{N} \times {D} \times i$$
 
-***VERY IMPORTANT! THESE MATH FORMULAS SHOWN ARE NOT ALWAYS TO BE SCALED 1:1 IN CODE, IT IS SHOWING THE FORMULA IN A SIMPLE MATTER. IN ACTUAL CODE YOU HAVE TO ADD THIS VECTOR OFFSET, THIS RULE WILL CONTINUE FOR THIS WHOLE POST/VIDEO.**  
+***VERY IMPORTANT! THESE MATH FORMULAS SHOWN ARE NOT ALWAYS TO BE SCALED 1:1 IN CODE, IT IS SHOWING THE FORMULA IN A SIMPLE MATTER. IN ACTUAL CODE YOU HAVE TO ADD THIS VECTOR OFFSET, THIS RULE WILL CONTINUE FOR THIS WHOLE POST/VIDEO.***
 
 ### Density
 Since the Script manages the density this part is simple, in my case I have an array that stores all the shells & if I change the number of layers I have it just adjusts from the upper bound of the array, example if I want more shells I add, else if I need less I delete. These both start from the upper bound of the array in both cases. After adjusting the density you need to run the height function to fix all the new changes. Moving on to Part 2!  
@@ -128,15 +128,15 @@ $$\vec{Centered \hspace{0.5cm} UV} =  frac(\vec{UV^{\prime}}) \times 2 - 1$$
 
 Now we finally have centered UVs & it's time to get a circle so we can start cutting the grass based on the radius/length of the circle. By taking the distance of every pixel to our centered UVs we create a circle with the length function.
 
-*** Length function as per Nvidia CG Documentation uses dot product ***  
+***Length function as per Nvidia CG Documentation uses dot product***  
 
 $$length = \sqrt{\vec{V}\cdot \vec{V}}$$
 
-*** Simplified Version, squaring both xy components & adding them. Pythagorean theorem basically ***  
+***Simplified Version, squaring both xy components & adding them. Pythagorean theorem basically***  
 
 $$length = \sqrt{x^2 + y^2}$$
 
-*** Inserting the length function now ***  
+***Inserting the length function now***  
 
 $$Circles =  length(frac(\vec{UV^{\prime}}) \times 2 - 1)$$
 
@@ -151,14 +151,27 @@ int cone = length > thickness * (rng - height);
 {% endhighlight %}
 
 {% highlight c++ %}
-//My garbage thickness - originally based off clip function to get it under 0 to clip
+//My garbage thickness - originally based off clip function to get it under 0 to kill pixels
 int cone = ((lenMask * (1 - _Thick )) - ((_SheetIndexNormalized/rng) - _Thick)) < 0;
 {% endhighlight %}
 
 ---
 
 ## Part 5 - Lighting
+Lighting is fairly simple we are going to do the traditional lambertian light model *check wiki page* where we reflection is calculated by taking the normal vector & the normalized light direction vector
 
+*The reflection is calculated by taking the dot product of the surface's unit normal vector N, and a normalized light-direction vector L, pointing from the surface to the light source. This number is then multiplied by the color of the surface and the intensity of the light hitting the surface:*
+
+$$Lambert Light =  \vec{N} \cdot  \vec{L}$$
+
+*Very commonly the Light vector might be flipped in that case you just need to multiply the Light vector by -1, similarly done in my raytracer*
+
+Now the only issue is with this lighting model the dark areas are extremely dark & get no light (0 ambient light), & it's currently unclamped which means the light ranges from -1 to 1 and negative light is weird so we clamp the light value to range from 0 to 1.
+Though we still have the dark areas, to fix them we can just add value to upscale it in our case this technique is called a half lambert by Valve, it's where we multiply by 0.5 and add by 0.5, to lighten up the dark areas towards the midsection of the objects shading, this isn't physically based anymore for obvious reasons, but we should't care since looks are more important than being technically correct as said by Acerola. 
+
+$$Half Lambert =  \vec{N} \cdot  \vec{L} \times 0.5 + 0.5$$
+
+After this, Valve squares the Half Lambert value before multiplying it in the final color calculation to  see the difference between the shaded & lit areas.
 
 ---
 
