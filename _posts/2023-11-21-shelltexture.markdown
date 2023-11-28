@@ -128,13 +128,16 @@ $$\vec{Centered \hspace{0.5cm} UV} =  frac(\vec{UV^{\prime}}) \times 2 - 1$$
 
 Now we finally have centered UVs & it's time to get a circle so we can start cutting the grass based on the radius/length of the circle. By taking the distance of every pixel to our centered UVs we create a circle with the length function.
 
-*** Length function as per Nvidia CG Documentation uses dot product ***
+*** Length function as per Nvidia CG Documentation uses dot product ***  
+
 $$length = \sqrt{\vec{V}\cdot \vec{V}}$$
 
-*** Simplified Version, squaring both xy components & adding them. Pythagorean theorem basically ***
+*** Simplified Version, squaring both xy components & adding them. Pythagorean theorem basically ***  
+
 $$length = \sqrt{x^2 + y^2}$$
 
-*** Inserting the length function now ***
+*** Inserting the length function now ***  
+
 $$Circles =  length(frac(\vec{UV^{\prime}}) \times 2 - 1)$$
 
 With this done we now have a tiny circle repeating itself 100 times on both the x & y axis. Now all we need to do is compare the strength of the color, to the scale of the thickness we set.
@@ -159,7 +162,7 @@ int cone = ((lenMask * (1 - _Thick )) - ((_SheetIndexNormalized/rng) - _Thick)) 
 
 ---
 
-## Part 5 - Windy Grass & Sphere Displacement
+## Part 6 - Windy Grass & Sphere Displacement
 
 ---
 
