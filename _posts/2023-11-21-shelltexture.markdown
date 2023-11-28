@@ -71,7 +71,7 @@ i decimal = normalized shell texture index  (ACEROLA CALLES THIS THE HEIGHT BUT 
 
 $$\vec{V} = \vec{N} \times {D} \times i$$
 
-***VERY IMPORTANT! THESE MATH FORMULAS SHOWN ARE NOT TO BE SCALED 1:1 IN CODE, IT IS SHOWING THE FORMULA IN A SIMPLE MATTER. IN ACTUAL CODE YOU HAVE TO ADD THIS VECTOR OFFSET, THIS RULE WILL CONTINUE FOR THIS WHOLE POST/VIDEO.**  
+***VERY IMPORTANT! THESE MATH FORMULAS SHOWN ARE NOT ALWAYS TO BE SCALED 1:1 IN CODE, IT IS SHOWING THE FORMULA IN A SIMPLE MATTER. IN ACTUAL CODE YOU HAVE TO ADD THIS VECTOR OFFSET, THIS RULE WILL CONTINUE FOR THIS WHOLE POST/VIDEO.**  
 
 ### Density
 Since the Script manages the density this part is simple, in my case I have an array that stores all the shells & if I change the number of layers I have it just adjusts from the upper bound of the array, example if I want more shells I add, else if I need less I delete. These both start from the upper bound of the array in both cases. After adjusting the density you need to run the height function to fix all the new changes. Moving on to Part 2!  
@@ -83,7 +83,7 @@ Notes: none.
 ## Part 2 - UV & Noise
 Let's talk about randomness, since we want to create grass, grass heights are often random in the real world, so to replicate a similar setting we first need a RNG for this shader, how do we do this? NOISE. we can do this by just stealing a hashing function from Shadertoy, but in all seriousness, we just need a decently uniform RNG, which a hashing function can do pretty well.  
 
-I'm in no way a cryptographic/randomness specialized guy, but I have used hashing functions many times, however I don't exactly understand what happens inside them, all I know is that in a hashing function, we just insert a seed & that seed will be moved/bit shifted in the function so much that a random number will come out of it ranging from 0 - 1, kinda all you need to know, not important to understand what happens inside that much.  
+I'm in no way a cryptographic/randomness specialized guy, but I have used hashing functions many times, however I don't exactly understand what happens inside them, all I know is that in a hashing function, we just insert a seed & that seed will be moved & some do bit shifting in the function so that a random number will come out of it ranging from 0 - 1, kinda all you need to know, not important to understand what happens inside that much.  
 
 {% highlight c++ %}
 float hash11(float p)       //hash11 I stole from shadertoy (1 input scalar 1 output scalar)
@@ -95,7 +95,9 @@ float hash11(float p)       //hash11 I stole from shadertoy (1 input scalar 1 ou
             }
 {% endhighlight %}
 
-Since we now have a black & white shell we need to address why it's all just 1 color, that's because we need to resize this UV map & it's only a size of 0 - 1, to be larger and to do that we just multiply the size by 100, now we have a 100x100 "blocks" that are random greyscaled colors ranging from 0 - 1.
+Since we now have a black & white shell we need to address why it's all just 1 color, that's because its starting size is from 0 - 1 we need to resize this UV map to be larger, and to do that we just multiply the size by 100, now we have a size UV of 100x100 "blocks" that are random greyscaled colors ranging from 0 - 1.
+
+$$\vec{UV^{\prime}} = \vec{UV} \times S$$
 
 Here I came across another problem where instead of using an uint, I used a float since I never weirdly used an int type in shaders I had a spam of noise on my quad because it's all in decimals so I never got the blocky/floor clamped numbers you would get using an uint instead of float. I was stuck on this even though I knew the issue was it being decimals while trying to understand why my noise value wasn't magically floored. Insert typical programmer brain fart moment.  
 
@@ -108,11 +110,38 @@ if the random value is greater than the height value then we display the color o
 
 So now we have blocky grass however it's all very green and is very boring in color, to give it some depth & make it look nice we need to add some fake ambient occlusion (real AO calculation is something I don't understand yet & is fairly complex, insert wiki AO formula). In our case though thinking about it logically base of the grass would be darker since less sun will be able to reach the floor, and since we know our grass heights we just multiply the color by the normalized index value of the shell which is essentially the height.
 
-With this done we can now see the grass base starting with being very dark to going up to a full green color based on it's height.
+With this done we can now see the grass base starting with being very dark to going up to a full green color. Now the color of the grass is based on its height.
 
 ---
 
 ## Part 4 - Thickness
+To achieve sharp grass we need a way to shave off the blocks starting from the center to the outer section of the block, we can do this with a length function, however before that, we have not addressed our UVs not being properly corrected in local space.  
+Things will start to get a little confusing so please bear with me & excuse my garbage explanation.
+
+*** UV PRIME IS THE UV RESIZED TO 100x100 (0 to 100) & NOT THE DEFAULT 1x1 (0 to 1). Previously in Part 2 I resized the UV & explained it there. ***
+
+$$Local \hspace{0.5cm} Space = frac(\vec{UV^{\prime}})$$
+
+This will give us a repeating set of UVs on our plane, however, it's not centered thus not optimal to start using our method of making a circle AT the center of the block of grass to cut the grass. To move it we simply do the following coordinate offset of the UV by adding a "* 2 - 1" to the fractional component.
+
+$$\vec{Centered \hspace{0.5cm} UV} =  frac(\vec{UV^{\prime}}) \times 2 - 1$$
+
+Now we finally have centered UVs & it's time to get a circle so we can start cutting the grass based on the radius/length of the circle. By taking the distance of every pixel to our centered UVs we create a circle with the length function.
+
+*** Length function as per Nvidia CG Documentation uses dot product ***
+$$length = \sqrt{\vec{V}\cdot \vec{V}}$$
+
+*** Simplified Version, squaring both xy components & adding them. Pythagorean theorem basically ***
+$$length = \sqrt{x^2 + y^2}$$
+
+*** Inserting the length function now ***
+$$Circles =  length(frac(\vec{UV^{\prime}}) \times 2 - 1)$$
+
+With this done we now have a tiny circle repeating itself 100 times on both the x & y axis. Now all we need to do is compare the strength of the color to the scale of the thickness we set.
+
+if the distance from the center (strength of the greyscale) is greater than the set thickness we just kill/discard the pixel.
+
+
 
 ---
 
