@@ -18,8 +18,7 @@ This post will mainly be about my YouTube video where I go over shell texturing.
 
 (Video link will go here)
 
-I will also write a YouTube script here, even though it's probably a good idea to just keep the script private, I don't really care,
-so I will make it public.
+I will also write a YouTube script here, even though it's probably a good idea to just keep the script private, I don't really care, so I will make it public.
 
 ---
 
@@ -102,8 +101,14 @@ Here I came across another problem where instead of using an uint, I used a floa
 
 ---
 
-## Part 3 - Blocky Grass
+## Part 3 - Blocky Grass & Fake Ambient Occulusion
 Now we have randomness which means we can start to simulate grass, our way of doing this is to simply compare 2 values, the random value and the height value of the shell (both range from 0 - 1).
+
+if the random value is greater than the height value then we display the color of the shell, & if it's not we just discard it, quick detour, but I never knew a discard keyword existed, thought I had to use the clip function initially but discard in this case just works perfectly.
+
+So now we have blocky grass however it's all very green and is very boring in color, to give it some depth & make it look nice we need to add some fake ambient occlusion (real AO calculation is something I don't understand yet & is fairly complex, insert wiki AO formula). In our case though thinking about it logically base of the grass would be darker since less sun will be able to reach the floor, and since we know our grass heights we just multiply the color by the normalized index value of the shell which is essentially the height.
+
+With this done we can now see the grass base starting with being very dark to going up to a full green color based on it's height.
 
 ---
 
@@ -111,11 +116,12 @@ Now we have randomness which means we can start to simulate grass, our way of do
 
 ---
 
-## Part 5 - Windy Grass
+## Part 5 - Lighting
+
 
 ---
 
-## Part 6 - Sphere Displacement
+## Part 5 - Windy Grass & Sphere Displacement
 
 ---
 
