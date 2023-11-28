@@ -137,11 +137,20 @@ $$length = \sqrt{x^2 + y^2}$$
 *** Inserting the length function now ***
 $$Circles =  length(frac(\vec{UV^{\prime}}) \times 2 - 1)$$
 
-With this done we now have a tiny circle repeating itself 100 times on both the x & y axis. Now all we need to do is compare the strength of the color to the scale of the thickness we set.
+With this done we now have a tiny circle repeating itself 100 times on both the x & y axis. Now all we need to do is compare the strength of the color, to the scale of the thickness we set.
 
-if the distance from the center (strength of the greyscale) is greater than the set thickness we just kill/discard the pixel.
+if the distance from the center (strength of the greyscale) is greater than the set thickness we just kill/discard the pixel. Doing so will give you cylindrical-shaped grass. Now when it comes to my implementation of clipping the cylinder to a cone shape it's worse since I used this with a clip function initially & am dividing & everyone knows dividing is big bad, so IMO you should stick to Acerola's thickness implementation which is comparing if the length is greater than the thickness times the (rng - the height).
 
+{% highlight c++ %}
+//Acerola thickness
+//if the > statement is true return 1 else 0
+int cone = length > thickness * (rng - height);
+{% endhighlight %}
 
+{% highlight c++ %}
+//My garbage thickness - originally based off clip function to get it under 0 to clip
+int cone = ((lenMask * (1 - _Thick )) - ((_SheetIndexNormalized/rng) - _Thick)) < 0;
+{% endhighlight %}
 
 ---
 
