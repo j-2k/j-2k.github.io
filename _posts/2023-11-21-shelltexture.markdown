@@ -69,7 +69,7 @@ N vector = for every vertex normal
 D scalar = distance/height  (SCALAR OFFSET)  
 i decimal = normalized shell texture index  (ACEROLA CALLES THIS THE HEIGHT BUT IM CALLING IT THE "NORMALIZED INDEX")  
 
-$$\vec{V} = \vec{N} \times {D} \times i$$
+$${\color{white} \vec{V} = \vec{N} \times {D} \times i }$$
 
 ***VERY IMPORTANT! THESE MATH FORMULAS SHOWN ARE NOT ALWAYS TO BE SCALED 1:1 IN CODE, IT IS SHOWING THE FORMULA IN A SIMPLE MATTER. IN ACTUAL CODE YOU HAVE TO ADD THIS VECTOR OFFSET, THIS RULE WILL CONTINUE FOR THIS WHOLE POST/VIDEO.***
 
@@ -97,7 +97,7 @@ float hash11(float p)       //hash11 I stole from shadertoy (1 input scalar 1 ou
 
 Since we now have a black & white shell we need to address why it's all just 1 color, that's because its starting size is from 0 - 1 we need to resize this UV map to be larger, and to do that we just multiply the size by 100, now we have a size UV of 100x100 "blocks" that are random greyscaled colors ranging from 0 - 1.
 
-$$\vec{UV^{\prime}} = \vec{UV} \times S$$
+$${\color{white} \vec{UV^{\prime}} = \vec{UV} \times S }$$
 
 Here I came across another problem where instead of using an uint, I used a float since I never weirdly used an int type in shaders I had a spam of noise on my quad because it's all in decimals so I never got the blocky/floor clamped numbers you would get using an uint instead of float. I was stuck on this even though I knew the issue was it being decimals while trying to understand why my noise value wasn't magically floored. Insert typical programmer brain fart moment.  
 
@@ -120,25 +120,25 @@ Things will start to get a little confusing so please bear with me & excuse my g
 
 ***UV PRIME IS THE UV RESIZED TO 100x100 (0 to 100) & NOT THE DEFAULT 1x1 (0 to 1). Previously in Part 2 I resized the UV & explained it there.***
 
-$$Local \hspace{0.25cm} Space = frac(\vec{UV^{\prime}})$$
+$${\color{white} Local \hspace{0.25cm} Space = frac(\vec{UV^{\prime}}) }$$
 
 This will give us a repeating set of UVs on our plane, however, it's not centered thus not optimal to start using our method of making a circle AT the center of the block of grass to cut the grass. To move it we simply do the following coordinate offset of the UV by adding a "* 2 - 1" to the fractional component.
 
-$$\vec{Centered \hspace{0.25cm} UV} =  frac(\vec{UV^{\prime}}) \times 2 - 1$$
+$${\color{white} \vec{Centered \hspace{0.25cm} UV} =  frac(\vec{UV^{\prime}}) \times 2 - 1 }$$
 
 Now we finally have centered UVs & it's time to get a circle so we can start cutting the grass based on the radius/length of the circle. By taking the distance of every pixel to our centered UVs we create a circle with the length function.
 
 ***Length function as per Nvidia CG Documentation uses dot product***  
 
-$$length = \sqrt{\vec{V}\cdot \vec{V}}$$
+$${\color{white} length = \sqrt{\vec{V}\cdot \vec{V}} }$$
 
 ***Simplified Version, squaring both xy components & adding them. Pythagorean theorem basically***  
 
-$$length = \sqrt{x^2 + y^2}$$
+$${\color{white} length = \sqrt{x^2 + y^2} }$$
 
 ***Inserting the length function now***  
 
-$$Circles =  length(frac(\vec{UV^{\prime}}) \times 2 - 1)$$
+$${\color{white} Circles =  length(frac(\vec{UV^{\prime}}) \times 2 - 1)}$$
 
 With this done we now have a tiny circle repeating itself 100 times on both the x & y axis. Now all we need to do is compare the strength of the color, to the scale of the thickness we set.
 
@@ -148,12 +148,16 @@ if the distance from the center (strength of the greyscale) is greater than the 
 //Acerola thickness
 //if the > statement is true return 1 else 0
 int cone = length > thickness * (rng - height);
+if(cone && _SheetIndex > 0) discard;
 {% endhighlight %}
 
 {% highlight c++ %}
 //My garbage thickness - originally based off clip function to get it under 0 to kill pixels
 int cone = ((lenMask * (1 - _Thick )) - ((_SheetIndexNormalized/rng) - _Thick)) < 0;
+if(cone && _SheetIndex > 0) discard;
 {% endhighlight %}
+
+My thickness is based on if the value goes under 0, so if it does then it will always discard the pixel unless the value is above 0 OR it's the first index (by first index I mean this "_SheetIndex > 0").
 
 ---
 
@@ -162,7 +166,7 @@ Lighting is fairly simple we are going to do the traditional Lambertian light mo
 
 *"The reflection is calculated by taking the dot product of the surface's unit normal vector N, and a normalized light-direction vector L, pointing from the surface to the light source. This number is then multiplied by the color of the surface and the intensity of the light hitting the surface:" - Lambertian Reflectance Wiki*
 
-$$Lambert \hspace{0.25cm} Light =  \vec{N} \cdot  \vec{L}$$
+$${\color{white} Lambert \hspace{0.25cm} Light =  \vec{N} \cdot  \vec{L} }$$
 
 *Very commonly the Light vector might be flipped in that case you just need to multiply the Light vector by -1, similarly done in my raytracer*
 
