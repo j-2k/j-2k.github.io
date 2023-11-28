@@ -37,14 +37,14 @@ Before I begin on what I did, I will try quickly explaining shell texturing.
 ## Part 0.5 - What is Shell Texturing?
 Simply put it's an optimized technique for rendering certain types of geometries that might be difficult to render due to them requiring high amounts of polygons/triangles where instead of using "real" geometry you fake the effect with shells (or meshes). 
 
-For example, 100 blades of grass or hair with real geometry, will require triangles for every single "strand", the issue with this is that let's say each "strand" will contain 10 triangles and that 10 triangles spanned throughout having a 100 blades (100 * 10 = 1000 tris already, 100 blades is nothing btw) can be exponentially expensive.
+For example, 100 blades of grass or hair with real geometry, will require triangles for every single "strand", the issue with this is that let's say each "strand" will contain 10 triangles and that 10 triangles spanned throughout having a 100 blades (100 * 10 = 1000 tris already, 100 blades is nothing btw) can be potentially expensive, on top of all the physics calcuations in the vertex shader & etc.
 
 However, since computers are turbo-fast nowadays there are ways to get good real physics & graphics when it comes to hair, fur, & grass, etc. But, discussing that is out of the scope of this video.
 
 #### How does Shell Texturing solve this issue?
 Shell texturing uses a technique where we duplicate the base mesh of an object on top of each other while killing certain pixels on the mesh to give off a shape of exactly what we want. For example, grass & fur/hair can all be done using this method, as you can see in these pictures.
 
-Since we duplicate the base mesh we don't create many triangles (assuming you are doing it right) & this method won't require tons of triangles like a geometry grass shader for example. However, this method is still prone to optimization issues such as overdraw, just go watch Acerola's video where he covers it.
+Since we duplicate the base mesh a couple of times (show examples of this on-screen from #acerolafurrychallenge) to create an effect we want like fur, we don't create many triangles (assuming you are doing it right) like a geometry grass shader for example. However, this method is still prone to optimization issues such as overdraw, if you'd like to learn about overdraw just go watch Acerola's video where he covers it.
 
 ---
 
@@ -72,21 +72,38 @@ i decimal = normalized shell texture index  (ACEROLA CALLES THIS THE HEIGHT BUT 
 
 $$\vec{V} = \vec{N} \times {D} \times i$$
 
-***VERY IMPORTANT! THESE MATH FORMULAS SHOWN ARE NOT TO BE SCALED 1:1 IN CODE, IT IS SHOWING THE FORMULA IN A SIMPLE MATTER. IN ACTUAL CODE YOU HAVE TO ADD THIS VECTOR OFFSET, THIS RULE WILL CONTINUE FOR THIS WHOLE POST/VIDEO.**
-
-Notes: none.
+***VERY IMPORTANT! THESE MATH FORMULAS SHOWN ARE NOT TO BE SCALED 1:1 IN CODE, IT IS SHOWING THE FORMULA IN A SIMPLE MATTER. IN ACTUAL CODE YOU HAVE TO ADD THIS VECTOR OFFSET, THIS RULE WILL CONTINUE FOR THIS WHOLE POST/VIDEO.**  
 
 ### Density
+Since the Script manages the density this part is simple, in my case I have an array that stores all the shells & if I change the number of layers I have it just adjusts from the upper bound of the array, example if I want more shells I add, else if I need less I delete. These both start from the upper bound of the array in both cases. After adjusting the density you need to run the height function to fix all the new changes. Moving on to Part 2!  
 
-
+Notes: none.
 
 ---
 
 ## Part 2 - UV & Noise
+Let's talk about randomness, since we want to create grass, grass heights are often random in the real world, so to replicate a similar setting we first need a RNG for this shader, how do we do this? NOISE. we can do this by just stealing a hashing function from Shadertoy, but in all seriousness, we just need a decently uniform RNG, which a hashing function can do pretty well.  
+
+I'm in no way a cryptographic/randomness specialized guy, but I have used hashing functions many times, however I don't exactly understand what happens inside them, all I know is that in a hashing function, we just insert a seed & that seed will be moved/bit shifted in the function so much that a random number will come out of it ranging from 0 - 1, kinda all you need to know, not important to understand what happens inside that much.  
+
+{% highlight c++ %}
+float hash11(float p)       //hash11 I stole from shadertoy (1 input scalar 1 output scalar)
+            {               //p gets inserted as our seed
+                p = frac(p * .1031);
+                p *= p + 33.33;
+                p *= p + p;
+                return frac(p);
+            }
+{% endhighlight %}
+
+Since we now have a black & white shell we need to address why it's all just 1 color, that's because we need to resize this UV map & it's only a size of 0 - 1, to be larger and to do that we just multiply the size by 100, now we have a 100x100 "blocks" that are random greyscaled colors ranging from 0 - 1.
+
+Here I came across another problem where instead of using an uint, I used a float since I never weirdly used an int type in shaders I had a spam of noise on my quad because it's all in decimals so I never got the blocky/floor clamped numbers you would get using an uint instead of float. I was stuck on this even though I knew the issue was it being decimals while trying to understand why my noise value wasn't magically floored. Insert typical programmer brain fart moment.  
 
 ---
 
 ## Part 3 - Blocky Grass
+Now we have randomness which means we can start to simulate grass, our way of doing this is to simply compare 2 values, the random value and the height value of the shell (both range from 0 - 1).
 
 ---
 
