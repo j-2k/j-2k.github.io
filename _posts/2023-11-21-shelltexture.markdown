@@ -18,7 +18,9 @@ This post will mainly be about my YouTube video where I go over shell texturing.
 
 (Video link will go here)
 
-I will also write a YouTube script here, even though it's probably a good idea to just keep the script private, I don't really care, so I will make it public.
+I will also write a YouTube script here, even though it's probably a good idea to just keep the script private, I don't really care, so I will make it public.  
+
+https://latex.codecogs.com/eqneditor/editor.php, I will also use this latex editor which I found online, which even has downloads which is awesome, just wanted to share this before I start :)  
 
 ---
 
@@ -183,7 +185,13 @@ After this, Valve squares the Half Lambert value before multiplying it in the fi
 
 My wind implementation is not something worth talking about since it's really simple just a sine wave with a slight offset based on the height scaled with a strength value. A "good" wind implementation would probably use something like a noise map that features noise in a way that is shaped in black & white strips while the strips are slightly distorted in the direction they are moving in. Add the noise offset & see your results, moving on to the more important thing is Grass Displacement.  
 
-Grass Displacement is currently based on a sphere shape since a sphere is the easiest shape to implement as it's just a number (as in the radius), we also need the position of the sphere for direction calculation.  
+Grass Displacement is currently based on a sphere shape since a sphere is the easiest shape to implement as it's just a number (as in the radius), we also need the position of the sphere for direction calculation. Once we have this we can do our full grass displacement calculations.   
+
+**Note, that V is the vertex vector (position), and S is the sphere origin vector (position).**
+
+$${\color{white}  \vec{V}  =  Vertex Vector}$$
+
+$${\color{white}  \vec{S}  =  Sphere Vector}$$
 
 $${\color{white}  \vec{Displacement \hspace{0.25cm} Direction}  =  \vec{V} - \vec{S}}$$
 
