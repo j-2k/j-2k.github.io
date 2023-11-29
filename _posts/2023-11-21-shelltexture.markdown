@@ -187,15 +187,29 @@ My wind implementation is not something worth talking about since it's really si
 
 Grass Displacement is currently based on a sphere shape since a sphere is the easiest shape to implement as it's just a number (as in the radius), we also need the position of the sphere for direction calculation. Once we have this we can do our full grass displacement calculations.   
 
-**Note, that V is the vertex vector (position), and S is the sphere origin vector (position).**
+$${\color{white}  \vec{V}  =  Vertex \hspace{0.25cm} Vector}$$
 
-$${\color{white}  \vec{V}  =  Vertex Vector}$$
+$${\color{white}  \vec{S}  =  Sphere \hspace{0.25cm} Vector}$$
 
-$${\color{white}  \vec{S}  =  Sphere Vector}$$
+$${\color{white}  \vec{Direction \hspace{0.25cm} Displacement}  =  \vec{V} - \vec{S}}$$
 
-$${\color{white}  \vec{Displacement \hspace{0.25cm} Direction}  =  \vec{V} - \vec{S}}$$
+Displacement Direction from the origin of the sphere position pointing towards the vertex position, since the whole word of displacement direction is a little long I will substitute it with Vector SV to signify it's a vector going from S to V.  
 
+$${\color{white} {Clamped \hspace{0.25cm} Displacement}  =  saturate(\frac{length(\vec{SV})}R)}$$
 
+Once we have the clamped displacement scalar (THIS IS NOT A VECTOR ANYMORE, I KNOW IM SAYING DISPLACEMENT BUT I THINK IT MAKES MORE SENSE THIS WAY) we now need to inverse it before we multiply it into the final normalized grass displacement vector to push them away. I will shorten "Clamped Displacement" to just CD in the next line.  
+
+Before I continue I want to address that SV is now normalized in the final Grass Displacement Vector we do this since we need to compare the value from the inversed clamp displacement. A Normalized Vector has the hat above vector SV, & normalizing is calculated by dividing the vector by its magnitude/length.
+
+$$\color{yellow} \hat{SV}=\frac{SV}{||SV||}$$
+
+SV is normalized, in our case in code we just do normalize(SV), but I wanted to show it here since normalizing is important. I might make a post just about normalizing and how it's used everywhere.
+
+$${\color{white}  \vec{Grass \hspace{0.25cm} Displacement}  =  \hat{\vec{SV}}  \times (1-CD)}$$
+
+The full formula without reducing all of this garbage looks like this (this should work if you plug it into code).  
+
+$${\color{magenta}  \vec{Grass \hspace{0.25cm} Displacement}  =  normalize(\vec{SV})  \times (1-saturate(\frac{length(\vec{V} - \vec{S})}R))}$$
 
 ---
 
