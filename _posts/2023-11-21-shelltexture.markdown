@@ -171,15 +171,23 @@ $${\color{white} Lambert \hspace{0.25cm} Light =  \vec{N} \cdot  \vec{L} }$$
 *Very commonly the Light vector might be flipped in that case you just need to multiply the Light vector by -1, similarly done in my raytracer*
 
 Now the only issue is with this lighting model the dark areas are extremely dark & get no light (0 ambient light), & it's currently unclamped which means the light ranges from -1 to 1 and negative light is weird so we clamp the light value to range from 0 to 1.
-Though we still have the dark areas, to fix them we can just add value to upscale it in our case this technique is called a half lambert by Valve, it's where we multiply by 0.5 and add by 0.5, to lighten up the dark areas towards the midsection of the objects shading, this isn't physically based anymore for obvious reasons, but we should't care since looks are more important than being technically correct as said by Acerola. 
+Though we still have the dark areas, to fix them we can just add value to upscale it in our case this technique is called a half lambert by Valve, it's where we multiply by 0.5 and add by 0.5, to lighten up the dark areas towards the midsection of the objects shading, this isn't physically based anymore for obvious reasons, but we shouldn't care since looks are more important than being technically correct as said by Acerola. 
 
 $${\color{white} Half \hspace{0.25cm} Lambert =  \vec{N} \cdot  \vec{L} \times 0.5 + 0.5}$$
 
-After this, Valve squares the Half Lambert value before multiplying it in the final color calculation to  see the difference between the shaded & lit areas.
+After this, Valve squares the Half Lambert value before multiplying it in the final color calculation to see the difference between the shaded & lit areas.
 
 ---
 
-## Part 6 - Windy Grass & Sphere Displacement
+## Part 6 - Windy Grass & Grass Displacement
+
+My wind implementation is not something worth talking about since it's really simple just a sine wave with a slight offset based on the height scaled with a strength value. A "good" wind implementation would probably use something like a noise map that features noise in a way that is shaped in black & white strips while the strips are slightly distorted in the direction they are moving in. Add the noise offset & see your results, moving on to the more important thing is Grass Displacement.  
+
+Grass Displacement is currently based on a sphere shape since a sphere is the easiest shape to implement as it's just a number (as in the radius), we also need the position of the sphere for direction calculation.  
+
+$${\color{white}  \vec{Displacement \hspace{0.25cm} Direction}  =  \vec{V} - \vec{S}}$$
+
+
 
 ---
 
