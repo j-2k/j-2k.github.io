@@ -162,10 +162,12 @@ int cone = ((lenMask * (1 - _Thick )) - ((_SheetIndexNormalized/rng) - _Thick)) 
 if(cone && _SheetIndex > 0) discard;
 {% endhighlight %}
 
-Circles are obtained by doing the formula above, T is the thickness value YOU set & h is height & rng is the random value from the hash function.
+Circles are obtained by doing the formula above, T is the thickness value YOU set & h is height & rng is the random value from the hash function.   
 
 $${\color{yellow} 0 \leq h \leq 1}$$
+
 $${\color{yellow} 0 \leq rng \leq 1}$$
+
 $${\color{yellow} 0 \leq T \leq 1}$$
 
 $${\color{white} Clip \hspace{0.25cm} Value = ((1 - Circles) \times (1 - T)) - ((\frac{h}{rng}) - T)}$$
