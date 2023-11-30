@@ -401,9 +401,6 @@ Currently, it's wrong because since we're always adding an offset of the normali
 
 ## Conclusion
 
-If you guys watched this whole video, I just really want to thank you since it's the first video where I did proper preparation.  
-
-
-Remind free time thing
+If you guys watched this whole video, I just really want to thank you since it's the first video where I did some form of proper preparation. I usually learn & practise shaders in my free time, so maybe in the future god knows when I'll probably do something similar to this video but about another topic that I tried to bring to life. Thanks for watching!
 
 
