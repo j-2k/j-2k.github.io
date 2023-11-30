@@ -161,16 +161,16 @@ int cone = ((lenMask * (1 - _Thick )) - ((_SheetIndexNormalized/rng) - _Thick)) 
 if(cone && _SheetIndex > 0) discard;
 {% endhighlight %}
 
-{\color{DarkOrange} Clip \hspace{0.25cm} Value = ((1 - Circles) \times (1 - T)) - ((\frac{h}{rng}) - T)}\newline
+$${\color{DarkOrange} Clip \hspace{0.25cm} Value = ((1 - Circles) \times (1 - T)) - ((\frac{h}{rng}) - T)}$$
 
 The Clip Value above will dictate if the pixel should be displayed or not by the 2 lines below, where if clip goes under 0 it dies else it displays. Again, I originally made it this way because I was using the Clip Function.
 
-{\color{white} 
+$${\color{white} 
 pixel = 
   \begin{cases} 
    {\color{Red}kill} & \text{if Clip Value < 0}\textbf{aa as s aa}\\
    {\color{green} display}& \text{otherwise}
-  \end{cases}}
+  \end{cases}}$$
 
 My thickness is based on if the value goes under 0, so if it does then it will always discard the pixel unless the value is above 0 OR it's the first index (by first index I mean this "_SheetIndex > 0").
 
