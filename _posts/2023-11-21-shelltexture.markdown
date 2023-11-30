@@ -80,17 +80,16 @@ $${\color{white} \vec{V} = \vec{N} \times {D} \times i }$$
 ### Density
 Since the Script manages the density this part is simple, in my case I have an array that stores all the shells & if I change the number of layers I have it just adjusts from the upper bound of the array, example if I want more shells I add, else if I need less I delete. These both start from the upper bound of the array in both cases. After adjusting the density you need to run the height function to fix all the new changes. Moving on to Part 2!  
 
-$$\forall i \in \{1, 2, ..., n\}, \: h = \frac{i}{n - 1}$$
+$${\color{white}\forall i \in \{1, 2, ..., n\}, \: h = \frac{i}{n - 1}}$$
 
 Explanation: for all elements i in the set from 1 to n (n being our max density number or # of LAYERS) the value of height or sheet index normalized is equal to i divided by n - 1. This math notation might be a bit confusing but again as I said previously I am trying to learn math notation, so just for the sake of simplicity I will show the code version which looks much simpler.
 
 {% highlight c# %}
-    for (int i = 1; i < n; i++)
-    {   //casting to a float since keeping it an int will give you messed up results.
-        _SheetIndexNormalized = (i / (float)(n - 1)); //this returned value ranges from 0 to 1!
-        //_SheetIndexNormalized can also be interpreted as height or h
-        //this is just my garbage naming convention that I used which helped me understand more
-    }
+for (int i = 1; i < n; i++)
+{   //casting to a float since keeping it an int will give you messed up results.
+    _SheetIndexNormalized = (i / (float)(n - 1)); //this returned value ranges from 0 to 1!
+    //_SheetIndexNormalized can also be interpreted as height or h
+}   //this is just my garbage naming convention that I used which helped me understand more
 {% endhighlight %}
 
 Finally, when you have the height calculated you just send this height to the shader & set the value in the shader to be equal to this height. Acerola did this in the shader since I guess it's faster but I didn't know that, but it's okay since it doesn't matter too much right now since we are just trying to understand stuff.
