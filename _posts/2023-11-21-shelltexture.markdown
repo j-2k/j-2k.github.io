@@ -40,7 +40,7 @@ Before I begin on what I did, I will try quickly explaining shell texturing.
 ## Part 0.5 - What is Shell Texturing?
 Simply put it's an optimized technique for rendering certain types of geometries that might be difficult to render due to them requiring high amounts of polygons/triangles where instead of using "real" geometry you fake the effect with shells (or meshes). 
 
-For example, 100 blades of grass or hair with real geometry, will require triangles for every single "strand", the issue with this is that let's say each "strand" will contain 10 triangles and that 10 triangles spanned throughout having a 100 blades (100 * 10 = 1000 tris already, 100 blades is nothing btw) can be potentially expensive, on top of all the physics calcuations in the vertex shader & etc.
+For example, 100 blades of grass or hair with real geometry, will require triangles for every single "strand", the issue with this is that let's say each "strand" will contain 10 triangles and that 10 triangles spanned throughout having a 100 blades (100 * 10 = 1000 tris already, 100 blades is nothing btw) can be potentially expensive, on top of all the physics calculations in the vertex shader & etc.
 
 However, since computers are turbo-fast nowadays there are ways to get good real physics & graphics when it comes to hair, fur, & grass, etc. But, discussing that is out of the scope of this video.
 
@@ -55,7 +55,7 @@ Since we duplicate the base mesh a couple of times (show examples of this on-scr
 First, a C# script to manage the shell textures (I CALLED THEM "SHEETS" IN MY CASE!). This ShellTextureManager script needs to manage all of the following functions & it's good to keep in mind this data is being sent to the GPU/Shell Texture Shader.
 
 *Initial Parameters*
-- Height (Manage height & spreading the sheets across the height)
+- Height (Manage height & spread the sheets across the height)
 - Density (density of the sheets / the amount of layers)
 - Color (Shell texture color)
 
@@ -79,6 +79,21 @@ $${\color{white} \vec{V} = \vec{N} \times {D} \times i }$$
 
 ### Density
 Since the Script manages the density this part is simple, in my case I have an array that stores all the shells & if I change the number of layers I have it just adjusts from the upper bound of the array, example if I want more shells I add, else if I need less I delete. These both start from the upper bound of the array in both cases. After adjusting the density you need to run the height function to fix all the new changes. Moving on to Part 2!  
+
+$$\forall i \in \{1, 2, ..., n\}, \: h = \frac{i}{n - 1}$$
+
+Explanation: for all elements i in the set from 1 to n (n being our max density number or # of LAYERS) the value of height or sheet index normalized is equal to i divided by n - 1. This math notation might be a bit confusing but again as I said previously I am trying to learn math notation, so just for the sake of simplicity I will show the code version which looks much simpler.
+
+{% highlight c# %}
+    for (int i = 1; i < n; i++)
+    {   //casting to a float since keeping it an int will give you messed up results.
+        _SheetIndexNormalized = (i / (float)(n - 1)); //this returned value ranges from 0 to 1!
+        //_SheetIndexNormalized can also be interpreted as height or h
+        //this is just my garbage naming convention that I used which helped me understand more
+    }
+{% endhighlight %}
+
+Finally, when you have the height calculated you just send this height to the shader & set the value in the shader to be equal to this height. Acerola did this in the shader since I guess it's faster but I didn't know that, but it's okay since it doesn't matter too much right now since we are just trying to understand stuff.
 
 Notes: none.
 
@@ -113,6 +128,8 @@ Now we have randomness which means we can start to simulate grass, our way of do
 if the random value is greater than the height value then we display the color of the shell, & if it's not we just discard it, quick detour, but I never knew a discard keyword existed, thought I had to use the clip function initially but discard in this case just works perfectly.
 
 So now we have blocky grass however it's all very green and is very boring in color, to give it some depth & make it look nice we need to add some fake ambient occlusion (real AO calculation is something I don't understand yet & is fairly complex, insert wiki AO formula). In our case though thinking about it logically base of the grass would be darker since less sun will be able to reach the floor, and since we know our grass heights we just multiply the color by the normalized index value of the shell which is essentially the height.
+
+$$AO \hspace{0.25cm} Colors  = Grass\hspace{0.25cm}Color \times height$$
 
 With this done we can now see the grass base starting with being very dark to going up to a full green color. Now the color of the grass is based on its height.
 
