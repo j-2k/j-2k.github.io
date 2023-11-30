@@ -401,6 +401,9 @@ Currently, it's wrong because since we're always adding an offset of the normali
 
 ## Conclusion
 
-If you guys watched this whole video, I just really want to thank you since it's the first video where I did proper preparation.
+If you guys watched this whole video, I just really want to thank you since it's the first video where I did proper preparation.  
+
+
+Remind free time thing
 
 
