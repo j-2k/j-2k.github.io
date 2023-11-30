@@ -20,7 +20,9 @@ This post will mainly be about my YouTube video where I go over shell texturing.
 
 I will also write a YouTube script here, even though it's probably a good idea to just keep the script private, I don't really care, so I will make it public.  
 
-https://latex.codecogs.com/eqneditor/editor.php, I will also use this latex editor which I found online, which even has downloads which is awesome, just wanted to share this before I start :)  
+Since I want to begin learning some math notation for the future when reading about math when it comes up in shaders/blogs/articles I will include some math notation in this video so I can get some practice in.  
+
+[latex.codecogs.com - Latex Editor #1](https://latex.codecogs.com/eqneditor/editor.php) OR [latexeditor.lagrida.com - Latex Editor #2](https://latexeditor.lagrida.com). I will also use these latex editors which I found online, which even have downloads which is awesome, just wanted to share this before I start :) (Suggest #2 for writing and #1 for downloads)  
 
 ---
 
@@ -159,7 +161,20 @@ int cone = ((lenMask * (1 - _Thick )) - ((_SheetIndexNormalized/rng) - _Thick)) 
 if(cone && _SheetIndex > 0) discard;
 {% endhighlight %}
 
+{\color{DarkOrange} Clip \hspace{0.25cm} Value = ((1 - Circles) \times (1 - T)) - ((\frac{h}{rng}) - T)}\newline
+
+The Clip Value above will dictate if the pixel should be displayed or not by the 2 lines below, where if clip goes under 0 it dies else it displays. Again, I originally made it this way because I was using the Clip Function.
+
+{\color{white} 
+pixel = 
+  \begin{cases} 
+   {\color{Red}kill} & \text{if Clip Value < 0}\textbf{aa as s aa}\\
+   {\color{green} display}& \text{otherwise}
+  \end{cases}}
+
 My thickness is based on if the value goes under 0, so if it does then it will always discard the pixel unless the value is above 0 OR it's the first index (by first index I mean this "_SheetIndex > 0").
+
+
 
 ---
 
