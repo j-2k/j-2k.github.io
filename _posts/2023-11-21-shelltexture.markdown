@@ -128,7 +128,7 @@ if the random value is greater than the height value then we display the color o
 
 So now we have blocky grass however it's all very green and is very boring in color, to give it some depth & make it look nice we need to add some fake ambient occlusion (real AO calculation is something I don't understand yet & is fairly complex, insert wiki AO formula). In our case though thinking about it logically base of the grass would be darker since less sun will be able to reach the floor, and since we know our grass heights we just multiply the color by the normalized index value of the shell which is essentially the height.
 
-$$AO \hspace{0.25cm} Colors  = Grass\hspace{0.25cm}Color \times height$$
+$${\color{white}AO \hspace{0.25cm} Colors  = Grass\hspace{0.25cm}Color \times height}$$
 
 With this done we can now see the grass base starting with being very dark to going up to a full green color. Now the color of the grass is based on its height.
 
@@ -253,4 +253,106 @@ $${\color{magenta}  \vec{Grass \hspace{0.25cm} Displacement}  =  normalize(\vec{
 
 ---
 
+# Script Stuff
+You can skip all this garbage, this is the script for the YouTube video.
 
+## Introduction
+- Hello everybody, over the past week or 2 I participated in a challenge by Acerola where we had to implement a shader technique called Shell Texturing, so in today's video I will be discussing everything I did & everything I learned from participating in this challenge.  
+
+- To make this video a little more fun I decided to follow Acerola's video style where I just talk into a mic except I'm using a crayon here, and show a bunch of garbage on the screen to help my explanation.  
+
+- I also want to make clear that this video's main purpose is to explain MY challenges, & learning experiences, & NOT to explain everything about shell texturing, for that you should just watch Acerola's video which I recommend doing anyway before even watching this video (link in the description).   
+
+## Disclaimer
+
+Quick Disclaimer, I might make or explain some things incorrectly & if I do please correct me in the comment section, I also want to emphasize that when I initially did this challenge, I never jumped into the code directly rather I first tried to implement shell texturing from what I understood from just watching the video & only when I got stuck I looked at code. I also highly suggest people do this when they want to learn anything new, this technique helped me a lot when it comes to learning new things in general.  
+
+One more disclaimer, I might not explain some shader terms or math terms I go over this video & apologize in advance if something didn't make sense. I will also be showing formulas in math notation which might make no sense since IMO it's hard to read & I hate math notation but it's something I have avoided for too long & need to learn for the sake of my future, I will try my best to show them while showing a simpler version of them through code or just explain it in plain English for the audience.  
+
+## What is Shell Texturing
+
+Shell texturing is a technique used in shaders to create a sense of depth and volume using just Shells & 2D Textures, this is commonly used in games to simulate surfaces that require complex geometries that require a lot of triangles such as fur, hair or grass, & even dense thin objects such as carpets, vines, or moss.    
+
+This technique is mainly used when real-time rendering is important & optimization is crucial, with the visuals being slightly compromised it's still a very good trade-off in certain circumstances. It's also important to know that even though this technique is fairly old, it's still being used lately in popular games such as Genshin Impact.    
+
+Shell texturing however does have some flaws in optimization such as overdraw, which happens if you have too many layers, (Watch Acerola explain overdraw because it's out of the scope of this video) so just be smart with what you do with it.   
+
+## Managing Shells
+
+The first step for me was to manage all the shell textures, since I didn't want to jump to shader code immediately, I wanted to first have functionality such as layer amount & height done, so I did that, however, I came across my first dumb mistake related to forgetting about normals.  
+
+Before I talk about that let's talk about how I handle layers, all I have is an array that holds all the layers & when I change the amount of layers I want, it changes to the new set amount of layers by adding or removing layers from the upper bound of the array.  
+
+Now when you do this the next problem comes where you won't have the shells matching to the height you set, so you need to always run a height function at the end to correctly set the heights of all the shells. Getting back to my first dumb mistake, Instead of setting the offset of my shells by the normals I just added an upward vector offset which is wrong, I didn't care since I was using quads but I knew an issue would come if I used spheres, so I quickly fixed this to include normals.  
+
+Now you might ask what are normals? normals are vectors perpendicular to vertices of a 3D Model or Shells in this case. They are mainly used for shading & lighting calculation which we will come to later in this video.  
+
+So how do we set the height of each shell to be based on the normals? Simple just offset the shell vertices by the normal vectors & multiply it by your max height/distance value & the shell index normalized value.   
+
+$${\color{white} \vec{V} = \vec{N} \times {D} \times i }$$
+
+What is the shell index normalized value? This is a garbage naming convention I used that helped me understand height distribution when it comes to my shells, it's a value that ranges from 0 to 1 obtained by doing the following shown in math notation, code, & english.   
+
+$${\color{white}\forall i \in \{1, 2, ..., n\}, \: h = \frac{i}{n - 1}}$$  
+
+{% highlight c# %}
+for (int i = 1; i < n; i++)
+{   //casting to a float since keeping it an int will give you messed up results.
+    _SheetIndexNormalized = (i / (float)(n - 1)); //this returned value ranges from 0 to 1!
+    //_SheetIndexNormalized can also be interpreted as height or h
+}   //this is just my garbage naming convention that I used which helped me understand more
+{% endhighlight %}  
+
+***Simply put, the Index based Height which ranges from 0 to 1, is obtained by taking the index of a shell & dividing it by the total amount of shells***   
+
+Highlighting again, that the sole purpose of this script is to send some values to our shader (GPU) with the biggest important 2 being height & density (amount of layers), small note instead of saying "height" I might say "Shell Index Normalized" which can be interpreted as height I just used this garbage naming convention because it ranges from 0 to 1 & it personally helped me understand it much more.  
+
+## UV & Randomness
+
+Since my objective was grass, we need to understand what grass is, & unfortunately I don't know what it is since I don't touch grass too often. *cut*   
+
+So imagine yourself sitting outside of a Subway eating a steak & cheese sandwich since it's the only good option on the menu, & then looking outside at a patch of grass, the first thing to note is that grass has random heights & varying densities, thicknesses & etc.   
+
+Here we will be addressing height & ignoring everything else because we are dumb, so how do we achieve random height? Noise, how do we get noise? by stealing a noise or hashing function from Shadertoy, you can trust me on this part since I do it often & Inigo Quilez is a pretty reliable guy, Source? Trust me bro.   
+
+Now I don't understand exactly what happens in hashing functions but what I can tell you is that whatever you put in a hashing function gets moved around and sometimes bitshifted to give you a random value.   
+
+The sole purpose of this hashing function is that it takes a seed and outputs a random value that is in the range of 0 to 1, we need to also make sure though that its values look distributed equally, so what does that mean?   
+
+***Make funny drop table***   
+
+Now I'm not a statistics guy, but if a monster A drop table contains say 3 items each being Asmongolds Hair, Acerolas Mic, or 500 dollars then if the drop table says Asmongolds Hair has a 99% drop chance, we can say monster A's drop table is NOT uniformly distributed.  
+
+However, if all 3 items had the same drop chance that adds up to 100%, in this case, each item would have a 33.3% drop chance, now we have a uniform distribution in our drop table.
+
+Now we addressed Randomness our shader might just display a single color, here I came across another issue where I never in my life in a shader used an unsigned integer datatype so I didn't get why my values were not magically floored until I realized I had a float since I normally never use anything besides a float, literally was stuck for 2 hours & experienced a programmer brain fart moment.
+
+After fixing, we should see just a singular color across our UV that's because our UV ranges from 0 to 1 and integers in general, floors all decimals. To fix this we simply expand our UV map to range to a higher number such as 100, & is as simple as doing this (UV * 100), 100 being the new desired UV size.
+
+With this done we should see noise on each shell texture, & be ready to move on to coloring & shaping.
+
+## Blocky Grass & Fake Ambient Occulusion
+To get the shape of grass, the noise or rng value holds a lot of info since it ranges from 0 to 1 and our height (shell index height) also ranges from 0 to 1 we can simply compare the 2 and see if the value of the 
+height is less than the random value then simply output a color, else if the height exceeds the random value of that pixel just kill it in this case using the discard keyword.  
+
+I never knew a discard keyword like this existed so I never used it, and have only been using clip to kill pixels, as you will see again coming up in the next section. I also want to ask a question to the 2 people watching this video, shouldn't you use never use conditions in shaders? I thought they were really bad & was told to never do them, this is probably why I never knew of the discard keyword, but anyway, not sure if this is true since I remember a long time ago looking up using conditions in shaders, it said something about it being "fine", but if you know a good answer please write it in the comments.
+
+So now we finally have grass, but the only issue is that it looks like it lacks depth & is very flat-shaded, to fix this issue we simply multiply the color output by the height (shell index height). This should give you a nice Faked Ambient Occlusion effect within your grass, this is not how real AO works, but is a good approach to solving this issue.  
+
+You know sometimes we don't care about being technically correct we should just do whatever looks right.
+
+## Grass Thickness
+This section is going to be garbage & I apologize in advance if it's garbage. Here I did my implementation on thickness but the process of killing pixels is based on clip and not discard since I didn't know it existed but I changed it anyway to feature discard when I learned about it.
+
+So how should you do thickness? let's first say you should stick to Acerola's thickness which is a simple check of doing the following: if length is > thickness * (rng - height) then discard the pixel.
+
+Now what horrid garbage did I do? Remember I said I used clip? here is what I got, I compared this whole line to see if it's less than 0, & if it is it dies, why less than 0? Because the clip function kills any pixel if the value fed to it goes under 0. *cut*
+
+I'm going to go crazy I just opened the clip function on Nvidia CG docs & noticed that the clip function literally is an if statement that checks if x is less than 0 and if it's true then discards it; I'm going to explode *degen sounds*
+
+
+
+
+## Lighting
+
+## Windy Grass & Grass Displacement
