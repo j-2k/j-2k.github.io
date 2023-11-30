@@ -164,7 +164,9 @@ if(cone && _SheetIndex > 0) discard;
 
 Circles are obtained by doing the formula above, T is the thickness value YOU set & h is height & rng is the random value from the hash function.
 
-$${\color{white} 0 \leq h \leq 1} \newline {\color{white}0 \leq rng \leq 1} \newline {\color{white}0 \leq T \leq 1}$$
+$${\color{teal} 0 \leq h \leq 1} \newline 
+{\color{teal}0 \leq rng \leq 1} \newline 
+{\color{teal}0 \leq T \leq 1}$$
 
 $${\color{DarkOrange} Clip \hspace{0.25cm} Value = ((1 - Circles) \times (1 - T)) - ((\frac{h}{rng}) - T)}$$
 
