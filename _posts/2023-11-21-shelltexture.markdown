@@ -164,11 +164,11 @@ if(cone && _SheetIndex > 0) discard;
 
 Circles are obtained by doing the formula above, T is the thickness value YOU set & h is height & rng is the random value from the hash function.
 
-$${\color{teal} 0 \leq h \leq 1} \newline 
-{\color{teal}0 \leq rng \leq 1} \newline 
-{\color{teal}0 \leq T \leq 1}$$
+$${\color{yellow} 0 \leq h \leq 1}$$
+$${\color{yellow} 0 \leq rng \leq 1}$$
+$${\color{yellow} 0 \leq T \leq 1}$$
 
-$${\color{DarkOrange} Clip \hspace{0.25cm} Value = ((1 - Circles) \times (1 - T)) - ((\frac{h}{rng}) - T)}$$
+$${\color{white} Clip \hspace{0.25cm} Value = ((1 - Circles) \times (1 - T)) - ((\frac{h}{rng}) - T)}$$
 
 The Clip Value above will dictate if the pixel should be displayed or not by the 2 lines below, where if clip goes under 0 it dies else it displays. Again, I originally made it this way because I was using the Clip Function.
 
