@@ -157,9 +157,14 @@ if(cone && _SheetIndex > 0) discard;
 
 {% highlight c++ %}
 //My garbage thickness - originally based off clip function to get it under 0 to kill pixels
+//lenMask is also INVERSED PREVIOUSLY (THAT MEANS I DID (1 - Circles) before this line)
 int cone = ((lenMask * (1 - _Thick )) - ((_SheetIndexNormalized/rng) - _Thick)) < 0;
 if(cone && _SheetIndex > 0) discard;
 {% endhighlight %}
+
+Circles are obtained by doing the formula above, T is the thickness value YOU set & h is height & rng is the random value from the hash function.
+
+$${\color{white} 0 \leq h \leq 1}\\{\color{white}0 \leq rng \leq 1}\\{\color{white}0 \leq T \leq 1}$$
 
 $${\color{DarkOrange} Clip \hspace{0.25cm} Value = ((1 - Circles) \times (1 - T)) - ((\frac{h}{rng}) - T)}$$
 
@@ -168,7 +173,7 @@ The Clip Value above will dictate if the pixel should be displayed or not by the
 $${\color{white} 
 pixel = 
   \begin{cases} 
-   {\color{Red}kill} & \text{if Clip Value < 0}\textbf{aa as s aa}\\
+   {\color{Red}kill} & \text{if Clip Value < 0}\\
    {\color{green} display}& \text{otherwise}
   \end{cases}}$$
 
