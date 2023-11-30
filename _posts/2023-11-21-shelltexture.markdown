@@ -254,7 +254,9 @@ $${\color{magenta}  \vec{Grass \hspace{0.25cm} Displacement}  =  normalize(\vec{
 ---
 
 # Script Stuff
-You can skip all this garbage, this is the script for the YouTube video.
+This is the end, you can exit from here/skip all this garbage below, since after this point is the script for the YouTube video.
+
+---
 
 ## Introduction
 - Hello everybody, over the past week or 2 I participated in a challenge by Acerola where we had to implement a shader technique called Shell Texturing, so in today's video I will be discussing everything I did & everything I learned from participating in this challenge.  
@@ -342,17 +344,63 @@ So now we finally have grass, but the only issue is that it looks like it lacks 
 You know sometimes we don't care about being technically correct we should just do whatever looks right.
 
 ## Grass Thickness
-This section is going to be garbage & I apologize in advance if it's garbage. Here I did my implementation on thickness but the process of killing pixels is based on clip and not discard since I didn't know it existed but I changed it anyway to feature discard when I learned about it.
+Explaining this section is going to be garbage & I apologize in advance if it's garbage. Here I did my implementation on thickness but the process of killing pixels is based on clip and not discard since I didn't know it existed but I changed it anyway to feature discard when I learned about it.  
 
-So how should you do thickness? let's first say you should stick to Acerola's thickness which is a simple check of doing the following: if length is > thickness * (rng - height) then discard the pixel.
+So how should you do thickness? let's first say you should stick to Acerola's thickness which is a simple check of doing the following: if length from the center is > thickness * (rng - height) then discard the pixel.  
 
-Now what horrid garbage did I do? Remember I said I used clip? here is what I got, I compared this whole line to see if it's less than 0, & if it is it dies, why less than 0? Because the clip function kills any pixel if the value fed to it goes under 0. *cut*
+Now what horrid garbage did I do? Remember I said I used clip? here is what I got, I compared this whole line to see if it's less than 0, & if it is it dies, why less than 0? Because the clip function kills any pixel if the value fed to it goes under 0. *cut*  
 
-I'm going to go crazy I just opened the clip function on Nvidia CG docs & noticed that the clip function literally is an if statement that checks if x is less than 0 and if it's true then discards it; I'm going to explode *degen sounds*
+I'm going to go crazy I just opened the clip function on Nvidia CG docs & noticed that the clip function literally is an if statement that checks if x is less than 0 and if it's true then discards it; I'm going to cry.  
 
+Sorry about that, going back to my thickness explanation I'm going to try to explain WTH I'm doing in this thickness swamp.  
 
+To achieve sharp grass we need to shave off each grass "block" from the center to the outer section of the block based on its length from the center to the edge while taking into account its height for the cone shape, this is calling for the length function however we can't directly do this as we have not done any implementation for this to work, so let's do it now, to get a length from the center to the edge we need 2 things a centered UV that is at EACH grass block so we shave EACH grass block, how do we do this?  
 
+First, get the fractional component of the resized UV, this will give you repeating UVs based on the size. Then we need to center each UV at the center of each block, to do this we multiply the fractional component by 2 - 1 which shifts it to the center, & finally, we can just use a length function to get the length of the pixel from the center.    
+
+With this done we should have circles in every single "block" on our plane, & we can begin shaving the grass block. Let's go back to my garbage implementation, which is based on the clip function, what if I just plug the inverse of this length in & discard it whenever it goes < 0, we see a cylinder, but you said we would get sharp grass, we would but here I didn't take into account the height now if I add a minus offset to the cylinder based on the proportion of the height by the rng we get a cone shape, and these thickness variables are for controlling the thickness values at certain lengths.   
+
+Now we have a grass thickness controller let's move on, ps. don't use my thickness method.
 
 ## Lighting
+The lighting here is based on the Lambertian Light model or the classic calculation of taking the dot product of normal direction & light direction, exactly done in my raytracer & toon shader previously, very cool indeed. This gives us a value ranging from -1 to 1 as the dot product does, & since negative light sounds stupid we clamp it to a range of 0 to 1 by saturating the dot product.   
+
+Small note about light direction, commonly it is given in the opposite direction and will yield wrong results, to fix this just flip the light direction to point alongside the normal direction by multiplying it by -1 or prefixing the light vector variable by a negative.  
+
+After doing all this we still have a very strong absence of light on one side to fix this we will be copying Valve's method of a Half Lambert which shifts all values up to the range of 0.5 to 1 I believe.
+
+Half Lambert works by multiplying the result of the dot product between the normal & light vectors by 0.5 & adding 0.5. Doing this will give you a nice light even across the areas that shouldn't receive light, as this isn't physical-based lighting anymore, but it's okay since we don't care about that. To finish lighting the final thing to do is to square your final light value, which is also done by valve, before multiplying it by the color values to see a stronger exponential-based difference in your lighting calculation.
 
 ## Windy Grass & Grass Displacement
+
+My Wind implementation is trash & not even worth talking about much, but it's just a sine wave with a small offset & another offset based on its grass height scaled down to make it sway & give it a curvy shape.
+
+Here is what I added to the shell texture the biggest part & the part I'm most happy about, Grass Displacement, let's talk about how this formula is used to calculate displacement.
+
+$${\color{magenta}  \vec{Grass \hspace{0.25cm} Displacement}  =  normalize(\vec{SV})  \times (1-saturate(\frac{length(\vec{V} - \vec{S})}R))}$$
+
+First, think about the easiest way to implement grass displacement, what is the most simple 3D shape to collide with verts? Spheres, why? because a sphere is just a single number when it comes to its size (radius), using this we can easily create sphere-based grass displacement. Let's say the radius of our sphere is 1 for the sake of simplicity.
+
+Now, we need a direction to point the vertex to go towards whenever the sphere is closer to it. To get this we do this:
+
+$${\color{white}  \vec{V}  =  Vertex \hspace{0.25cm} Vector}$$
+
+$${\color{white}  \vec{S}  =  Sphere \hspace{0.25cm} Vector}$$
+
+$${\color{white}  \vec{Direction \hspace{0.25cm} Displacement}  =  \vec{V} - \vec{S}}$$
+
+Now we have the direction of a vector going from the sphere origin to the vector, with this done all the vertices of the grass should go away from the direction of the sphere, with this done we now need a way to displace ONLY the grass WITHIN the RADIUS of the sphere & leave all other grass alone that is outside of our sphere radius.   
+
+To do this we first constantly add the normalized direction displacement to the grass's vertices but we then multiply it by a push value that ranges from 0 to 1, if this push value is 0 then Vec (1,1) * 0 is (0,0) not moving the grass else if it's 1 then Vec (1,1) * 1 is (1,1) it will then push the grass with full strength. So how do we get this push value? by doing the following.
+
+$${\color{white} {Clamped \hspace{0.25cm} Displacement}  =  saturate(\frac{length(\vec{SV})}R)}$$
+
+What is going on here? We first see the length of the vector that is going from the sphere position to the position of a vertex. We then SCALE the length proportionally to the radius what does this mean? If the radius is 1 and the length is 7 (7 means it's far as shit), so we don't want that vertex to be affected, this will first give you a value of 7/1 which is 7 which is then saturated to clamp to the range of 0 to 1 and is now 1, 1 is our push force... or is it?    
+
+Currently, it's wrong because since we're always adding an offset of the normalized direction to all the vertices (1,1) * 1 means that it will move it fully, but we did say length 7 is far and shouldn't affect the grass! Correct, so here we inverse this push value by doing 1 - push force & then multiplying it by the direction. This will cause it not to move & stay in place while doing other wind calculations.
+
+## Conclusion
+
+If you guys watched this whole video, I just really want to thank you since it's the first video where I did proper preparation & tried to prepare properly for it.
+
+
