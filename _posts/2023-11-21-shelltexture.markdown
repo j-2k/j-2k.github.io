@@ -251,19 +251,141 @@ The full formula without reducing all of this garbage looks like this (this shou
 
 $${\color{magenta}  \vec{Grass \hspace{0.25cm} Displacement}  =  normalize(\vec{SV})  \times (1-saturate(\frac{length(\vec{V} - \vec{S})}R))}$$
 
+
+
+
 ---
 
-# Script Stuff
+# New Better Summarized Script
 This is the end, you can exit from here/skip all this garbage below, since after this point is the script for the YouTube video.
 
 ---
 
 ## Introduction
-- Hello everybody, over the past week or 2 I participated in a challenge by Acerola where we had to implement a shader technique called Shell Texturing, so in today's video I will be discussing everything I did & everything I learned from participating in this challenge.  
+In the past week or two, I took part in Acerola's challenge to implement a shader technique called Shell Texturing. In today's video, I'll discuss my experiences and everything I learned during this challenge. To add some fun, I decided to adopt Acerola's video style, talking into a mic while using a crayon and displaying stuff on the screen to aid my garbage explanation. It's important to note that this video is focused on sharing my challenges and learning experiences, & NOT providing a comprehensive overview of shell texturing. I recommend watching Acerola's video first for a complete understanding (link in the description).   
 
-- To make this video a little more fun I decided to follow Acerola's video style where I just talk into a mic except I'm using a crayon here, and show a bunch of garbage on the screen to help my explanation.  
+## Disclaimer
+Quick disclaimer: If I make mistakes or explain things incorrectly, please correct me in the comment section. It's important to note that when I initially tackled this challenge, I refrained from diving into the code directly. Instead, I attempted to implement shell texturing based on my understanding from watching the video. Only when I encountered difficulties did I turn to the code. I highly recommend this approach for anyone learning something new, as it proved beneficial for me in grasping concepts. Another disclaimer: I might skip explanations for certain shader or math terms in this video. I apologize in advance if anything is unclear. Additionally, I'll be presenting formulas in math notation, which may be challenging to read. Despite my aversion to math notation, I've decided to confront it for the sake of my future learning. I'll do my best to simplify and explain these formulas using code or plain English for the audience.   
 
-- I also want to make clear that this video's main purpose is to explain MY challenges, & learning experiences, & NOT to explain everything about shell texturing, for that you should just watch Acerola's video which I recommend doing anyway before even watching this video (link in the description).   
+## What is Shell Texturing
+Shell texturing is a shader technique used to fake depth and volume using Shells and 2D Textures. Commonly utilized in games to simulate complex geometries like fur, hair, or grass, and dense, thin objects such as carpets or vines, this method is particularly valuable for real-time rendering where optimization is critical. Despite some compromise in visuals, it remains a favorable trade-off, as seen in recent games like Genshin Impact. However, Shell texturing has optimization flaws, like overdraw when too many layers are involved, a topic beyond the scope of this video (I recommended to watch Acerola's explanation).   
+
+## Managing Shells
+In my approach, the initial focus was on managing all the shell textures. Rather than immediately diving into shader code, I prioritized establishing functionality such as layer count and height adjustments. However, I encountered my first dumb mistake related to forgetting about normals.   
+
+Before delving into that, let's discuss how I handle layers. I use an array to store all the layers, adjusting the array size when changing the layer count by adding or removing layers from the upper bounds of the array. The challenge arises when the shells don't match the set height, requiring a height function to correct their heights. Regarding my initial mistake, I mistakenly set the shell offset using an upward vector instead of considering normals. While it didn't pose an issue with quads, I knew it would become problematic with spheres, so I promptly corrected it to incorporate normals.   
+
+Now, what are normals? They are vectors perpendicular to the vertices of a 3D model or shells in this case, primarily used for shading and lighting calculations, topics we'll explore later in this video. To set the height of each shell based on normals, one simply offsets the shell vertices by the normal vectors, multiplying them by the max height/distance value and the shell index normalized value.   
+
+$${\color{white} \vec{V} = \vec{N} \times {D} \times i }$$
+
+The shell index normalized value is my garbage naming convention I used to comprehend height distribution within my shells. It's a value ranging from 0 to 1, obtained through the following mathematical expression & code implementation, but In simpler terms, the Index-based Height, ranging from 0 to 1, is derived by dividing the index of a shell by the total number of shells. To reiterate, the purpose of this script is to send values to our shader (GPU), with the most crucial ones being height and density (number of layers). As a side note, instead of using the term "height," I might refer to it as "Shell Index Normalized," something I adopted for personal clarity, given its range from 0 to 1.   
+
+$${\color{white}\forall i \in \{1, 2, ..., n\}, \: h = \frac{i}{n - 1}}$$  
+
+{% highlight c# %}
+for (int i = 1; i < n; i++)
+{   //casting to a float since keeping it an int will give you messed up results.
+    _SheetIndexNormalized = (i / (float)(n - 1)); //this returned value ranges from 0 to 1!
+    //_SheetIndexNormalized can also be interpreted as height or h
+}   //this is just my garbage naming convention that I used which helped me understand more
+{% endhighlight %}  
+
+## UV & Randomness
+Since my objective was grass, we need to understand what grass is, & unfortunately grass is something I rarely interact with. *cut*   
+
+Picture yourself at Subway enjoying a steak & cheese sandwich, glancing at a patch of grass outside. The first thing to note is that grass has random heights & varying densities, thicknesses & etc. Here we will be addressing height & ignoring everything else because we are dumb, so how do we achieve random height? Noise, how do we get noise? by stealing a noise or hashing function from Shadertoy, you can trust me on this part since I do it often & Inigo Quilez is a pretty reliable guy, the source? Trust me bro.   
+
+Now I don't understand exactly what happens in hashing functions but what I can tell you is that whatever you put in a hashing function is called a seed & it gets moved around and sometimes bitshifted to give you a random value. The sole purpose of this hashing function is that it takes a seed and outputs a random value that is in the range of 0 to 1, we need to also make sure though that its values look equally distributed, so what does that mean?   
+
+***Make funny drop table***   
+
+Now I'm not a statistics guy, but if monster A drop table contains say 3 items being Asmongolds Hair, Acerolas Mic, or 500 dollars. If the drop table says Asmongolds Hair has a 99% drop chance, we can say monster A's drop table is NOT uniformly distributed. However, if all 3 items had the same drop chance that adds up to 100%, in this case, each item would have a 33.3% drop chance, now we have a uniform distribution in our drop table.
+
+Now we addressed Randomness our shader might just display a single color, here I came across another issue where I never in my life in a shader used an unsigned integer datatype so I didn't get why my values were not magically floored until I realized I had a float since I normally never use anything besides a float, literally was stuck for 2 hours & experienced a programmer brain fart moment.
+
+After fixing, we should see just a singular color across our UV that's because our UV ranges from 0 to 1 and integers in general, floors all decimals. To fix this we simply expand our UV map & is as simple as multiplying it by a scalar. With this done we should see noise on each shell texture, & be ready to move on to coloring & shaping grass.
+
+## Blocky Grass & Fake Ambient Occulusion
+To get the shape of grass, the noise or random value, ranging from 0 to 1, is important as it aligns with the height (shell index height) range. By comparing the two, if the height is less than the random value, I output a color; otherwise, just discard to kill the pixel.
+
+Surprisingly, I this is the first time I hear about the discard keyword, since I always used the clip function to kill pixels. Quick question to the 2 people watching this video, Is it okay to use conditions in shaders? I was told they were bad so I never used conditions much, hence my unfamiliarity with the discard keyword. If you have good insights on this, please do tell me in the comment section, thanks guys!   
+
+Now that we have the grass, we are presented with another issue & its the lack of depth and its flat shaded look. To address this, a simple solution is to multiply the color output by the height (shell index height). This gives it a Faked Ambient Occlusion effect, it's not real AO & real AO im pretty sure is much much more complicated, & is out of the scope of this video.
+
+## Grass Thickness
+Explaining this section is going to be garbage & I apologize in advance if it's garbage. Here I did my implementation on thickness but the process of killing pixels is based on clip and not discard (since I didn't know it existed) but I changed it anyway to feature discard when I learned about it.  
+
+So how should YOU do thickness? YOU should stick to Acerola's thickness which is a simple check of doing the following: if length from the center is > thickness * (rng - height) then discard the pixel.  
+
+Now what horrid garbage did I do? (Remember I said I used clip?) here is what I got, I compared this whole line to see if it's less than 0, & if it is it dies, why less than 0? Because the clip function kills any pixel if the value fed to it goes under 0. *cut*  
+
+*I'm going to go crazy I just opened the clip function on Nvidia CG docs & noticed that the clip function literally is an if statement that checks if x is less than 0 and if it's true then discards it; I'm going to cry.*   
+
+Now i'm going to try to explain WTH I'm doing in my thickness swamp. To achieve sharp grass we need to shave off each grass "block" from the center to the outer section of the block based on its length from the center to the edge, while taking into account its height for the cone shape, this is calling for the length function however we can't directly do this as we have not done any implementation for this to work, so let's do it now, to get a length from the center to the edge we need 2 things a centered UV that is at EACH grass block so we shave EACH grass block, how do we do this?   
+
+First, I take the fractional component of the resized UV, creating repeating UVs, then centering each UV involves multiplying the fractional component of the upscaled UV by 2 - 1, shifting it to the center of EACH "grass block". Then finally the length function is then applied to determine every pixel's distance from the center in each "grass block".   
+
+With this done we should have circles in every "block" on our planes, allowing us to start shaving each grass block. Let's go back to my garbage implementation, which is based on the clip function, what if I just plug the inverse of this length in & discard it whenever it goes < 0, we see a cylinder, but how do we change this to a cone? We need to take into account the height, now if I add a minus offset to the cylinder based on the value that comes out from the height divided by the RNG we get a cone shape. Closing out I also have these thickness variables for controlling the thickness values at certain lengths.   
+
+Now we have a grass thickness controller let's move on, ps. don't use my thickness method.
+
+## Lighting
+The lighting here is based on the Lambertian Light model or the classic calculation of taking the dot product of normal direction & light direction, exactly done in my raytracer & toon shader previously, very cool indeed. This gives us a value ranging from -1 to 1 as the dot product does, & since negative light sounds stupid I clamp it to a range of 0 to 1 by saturating the dot product.   
+
+Small note about light direction, commonly it is given in the opposite direction and will yield wrong results, to fix this just flip the light direction to point alongside the normal direction by multiplying it by -1 or prefixing the light vector variable by a negative.  
+
+After doing all this we still have a very strong absence of light on one side to fix this we will be copying Valve's method of a Half Lambert which shifts all values up to the range of 0.5 to 1 I believe.
+
+Half Lambert works by multiplying the result of the dot product between the normal & light vectors by 0.5 & adding 0.5. Doing this will give you a nice light even across the areas that shouldn't receive light, as this isn't physical-based lighting anymore, but it's okay since we don't care about that. To finalize lighting Valve squares the Half Lambert value, before multiplying it by the color values to I THINK see a stronger exponential-based difference in your shaded areas.
+
+## Windy Grass & Grass Displacement
+
+My Wind implementation is trash & not even worth talking about much, but it's just a sine wave with a small offset & another offset based on its grass height scaled down to make it sway & give it a curvy shape.
+
+Here is what I added to my shell textured grass & is the part I'm most happy about, Grass Displacement, let's talk about how this formula is used to calculate displacement.
+
+$${\color{magenta}  \vec{Grass \hspace{0.25cm} Displacement}  =  normalize(\vec{SV})  \times (1-saturate(\frac{length(\vec{V} - \vec{S})}R))}$$
+
+First, think about the easiest way to implement grass displacement, what is the most simple 3D shape to collide with vertices? I think its Spheres, why? because a sphere is just a single number when it comes to its size/collider (radius), using this we can easily create sphere-based grass displacement. Let's say the radius of our sphere from here onward is 1 for the sake of simplicity.
+
+Now, we need a direction to point the grass to go towards whenever the sphere hits the grass. To get this we do a minus, really simple:
+
+$${\color{white}  \vec{V}  =  Vertex \hspace{0.25cm} Vector}$$
+
+$${\color{white}  \vec{S}  =  Sphere \hspace{0.25cm} Vector}$$
+
+$${\color{white}  \vec{Direction \hspace{0.25cm} Displacement}  =  \vec{V} - \vec{S}}$$
+
+Now we have the direction of displacment going from the sphere origin to the grass's vertices, if we use this all the vertices of the grass should point away from the direction of the sphere, with this done we now need a way to displace ONLY the grass WITHIN the RADIUS of the sphere & leave all other grass alone that is outside of our sphere radius.   
+
+To do this we first constantly add the normalized direction displacement to the grass's vertices but we then multiply it by a push value that ranges from 0 to 1, if this push value is 0 then assume the grass direction is Vec (1,1) & the push value is 0, we multiply the 2 together we get (0,0) not moving the grass else if the push value is 1 then Vec (1,1) * 1 is (1,1) it will then push the grass with full strength. So how do we get this push value? by doing the following.
+
+$${\color{white} {Clamped \hspace{0.25cm} Displacement}  =  saturate(\frac{length(\vec{SV})}R)}$$
+
+What is going on here? We first see the length of the vector that is going from the sphere position to the position of a vertex. We then SCALE the length proportionally to the radius what does this mean? If the radius is 1 and the length is 7 (7 means it's far as shit), so we don't want that vertex to be affected, this will first give you a value of 7/1 which is 7 (7 IS OVER THE RADIUS THUS IS OUT OF BOUNDS) which is then saturated to clamp to the range of 0 to 1 and is now 1, 1 is our push force... or is it?    
+
+Currently, it's wrong because since we're always adding an offset of the normalized direction to all the vertices (1,1) * 1 means that it will move it fully, but we did say length 7 is far and shouldn't affect the grass! Correct, so here we inverse this push value by doing 1 - push force which equals 0 & then multiplying it by the direction which results in grass displacement value being 0, 0 means nothing & will cause the grass not to move & stay in place while doing other wind calculations.
+
+## Conclusion
+
+If you guys watched this whole video, I just really want to thank you since it's the first video where I did some form of proper preparation. I usually learn & practise shaders in my free time, so maybe in the future god knows when I'll probably do something similar to this video but about another topic that I tried to bring to life. Thanks for watching!
+
+---
+---
+---
+
+# Full length script
+This is the end, you can exit from here/skip all this garbage below, since after this point is the script for the YouTube video.
+
+---
+
+## Introduction
+Hello everybody, over the past week or 2 I participated in a challenge by Acerola where we had to implement a shader technique called Shell Texturing, so in today's video I will be discussing everything I did & everything I learned from participating in this challenge.  
+
+To make this video a little more fun I decided to follow Acerola's video style where I just talk into a mic except I'm using a crayon here, and show a bunch of garbage on the screen to help my explanation.  
+
+I also want to make clear that this video's main purpose is to explain MY challenges, & learning experiences, & NOT to explain everything about shell texturing, for that you should just watch Acerola's video which I recommend doing anyway before even watching this video (link in the description).   
 
 ## Disclaimer
 
