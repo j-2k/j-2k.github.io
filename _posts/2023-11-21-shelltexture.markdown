@@ -80,7 +80,7 @@ $${\color{white} \vec{V} = \vec{N} \times {D} \times i }$$
 ### Density
 Since the Script manages the density this part is simple, in my case I have an array that stores all the shells & if I change the number of layers I have it just adjusts from the upper bound of the array, example if I want more shells I add, else if I need less I delete. These both start from the upper bound of the array in both cases. After adjusting the density you need to run the height function to fix all the new changes. Moving on to Part 2!  
 
-$${\color{white}\forall i \in \{1, 2, ..., n\}, \: h = \frac{i}{n - 1}}$$
+$${\color{white}\forall i \in \{1, 2, ..., n-1\}, \: h_i = \frac{i}{n - 1}}$$
 
 Explanation: for all elements i in the set from 1 to n (n being our max density number or # of LAYERS) the value of height or sheet index normalized is equal to i divided by n - 1. This math notation might be a bit confusing but again as I said previously I am trying to learn math notation, so just for the sake of simplicity I will show the code version which looks much simpler.
 
@@ -281,7 +281,7 @@ $${\color{white} \vec{V} = \vec{N} \times {D} \times i }$$
 
 The shell index normalized value is my garbage naming convention I used to comprehend height distribution within my shells. It's a value ranging from 0 to 1, obtained through the following mathematical expression & code implementation, but In simpler terms, the Index-based Height, ranging from 0 to 1, is derived by dividing the index of a shell by the total number of shells. To reiterate, the purpose of this script is to send values to our shader (GPU), with the most crucial ones being height and density (number of layers). As a side note, instead of using the term "height," I might refer to it as "Shell Index Normalized," something I adopted for personal clarity, given its range from 0 to 1.   
 
-$${\color{white}\forall i \in \{1, 2, ..., n\}, \: h = \frac{i}{n - 1}}$$  
+$${\color{white}\forall i \in \{1, 2, ..., n-1\}, \: h_i = \frac{i}{n - 1}}$$
 
 {% highlight c# %}
 for (int i = 1; i < n; i++)
@@ -417,7 +417,7 @@ $${\color{white} \vec{V} = \vec{N} \times {D} \times i }$$
 
 What is the shell index normalized value? This is a garbage naming convention I used that helped me understand height distribution when it comes to my shells, it's a value that ranges from 0 to 1 obtained by doing the following shown in math notation, code, & english.   
 
-$${\color{white}\forall i \in \{1, 2, ..., n\}, \: h = \frac{i}{n - 1}}$$  
+$${\color{white}\forall i \in \{1, 2, ..., n-1\}, \: h_i = \frac{i}{n - 1}}$$
 
 {% highlight c# %}
 for (int i = 1; i < n; i++)
