@@ -16,7 +16,9 @@ usemathjax: true
 
 This post will mainly be about my YouTube video where I go over shell texturing.
 
-(Video link will go here)
+Watch the video if you'd like to learn about shell texturing & how I learned & implemented it.
+
+<iframe width="" height="" src="https://www.youtube.com/embed/r7XhWUDj-Ts" frameborder="0" allowfullscreen></iframe>
 
 I will also write a YouTube script here, even though it's probably a good idea to just keep the script private, I don't really care, so I will make it public.  
 
