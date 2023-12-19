@@ -101,6 +101,9 @@ show-author: true
 # do you want some animations?
 animation: true
 
+# do you want to show all future posts instantly & not wait untill the future date is reached for the post to show up? do true
+future: true
+
 # add default values to specific pages or layouts
 defaults:
   - scope:
