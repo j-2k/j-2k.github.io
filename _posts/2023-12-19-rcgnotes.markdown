@@ -39,14 +39,27 @@ z' = x * c02 + y * c12 + z * c22
 
 since we are not sequentially accessing elements from the array this is not ideal, & could degrade cache performance in the CPU, resulting in cache misses. I heard this term many times but never really knew what it meant, I already knew that accessing memory sequentially was good, but didn't know the terms Cache Miss & Hit had to do with it, good to know now I guess.
 
-*"We won't go into too many details here, but let's say that the closest memory that the CPU can access is called a cache. This cache is very fast to access but can only store a very limited number of data. When the CPU needs to access some data, it first checks if it exists in the cache. If it does, the CPU access this data right away (cache hit), but it doesn't (cache miss); it first needs to create an entry in the cache for it, then copy to this location the data from the main memory. This process is more time-consuming than when the data already exists in the cache, so ideally, we want to avoid cache misses as much as possible. Additionally, when copying the particular data from main memory, the CPU also copies a chunk of the data that lives right next to it (for instance, the next 24 bytes) because hardware engineers figured that if your code needed to access an element of an array, it was likely to access the elements following it soon after as well. Indeed, in programs, we often loop over elements of an array in sequential order, and this assumption is likely to be true. Applied to our matrix problem, accessing the coefficients of the matrix in nonsequential order can therefore be a problem. Assuming the CPU loads the requested float in the cache plus the 3 floats next to it, our current implementation might lead to many caches misses since the coefficients used to calculate x' y' and z' are 5 floats apart in the array." -[scratchapixel](https://scratchapixel.com/lessons/mathematics-physics-for-computer-graphics/geometry/row-major-vs-column-major-vector.html)*
+*"We won't go into too many details here, but let's say that the closest memory that the CPU can access is called a cache. This cache is very fast to access but can only store a very limited number of data. When the CPU needs to access some data, it first checks if it exists in the cache. If it does, the CPU access this data right away (cache hit), but it doesn't (cache miss); it first needs to create an entry in the cache for it, then copy to this location the data from the main memory. This process is more time-consuming than when the data already exists in the cache, so ideally, we want to avoid cache misses as much as possible. Additionally, when copying the particular data from main memory, the CPU also copies a chunk of the data that lives right next to it (for instance, the next 24 bytes) because hardware engineers figured that if your code needed to access an element of an array, it was likely to access the elements following it soon after as well. Indeed, in programs, we often loop over elements of an array in sequential order, and this assumption is likely to be true. Applied to our matrix problem, accessing the coefficients of the matrix in nonsequential order can therefore be a problem. Assuming the CPU loads the requested float in the cache plus the 3 floats next to it, our current implementation might lead to many caches misses since the coefficients used to calculate x' y' and z' are 5 floats apart in the array."* -[scratchapixel](https://scratchapixel.com/lessons/mathematics-physics-for-computer-graphics/geometry/row-major-vs-column-major-vector.html)
 
 Column Major multiplication looks like this  
 x' = c00 * x + c01 * y + c02 * z 
 y' = c10 * x + c11 * y + c12 * z 
 z' = c20 * x + c21 * y + c22 * z
 
-Now just imagine, all the performance your missing out on if you use row major multiplication when you can just use column major, also by now it should be stated that everything in graphics in terms of transformation, scale, rotation, projection matrix, & etc. Is done through matricies so you can imagine doing all that every single frame :), I noticied that homogenous coordinates are normally taught in column major as well so I guess thats the reason, but anyway this debate seems something like little endian vs big endian except that it's important for everyone to learn the difference between row & column major.
+Now just imagine, all the performance your missing out on if you use row major multiplication when you can just use column major, also by now it should be stated that everything in graphics in terms of transformation, scale, rotation, projection matrix, & etc. Is done through matricies so you can imagine doing all that every single frame (Forgot to mention, since the compiler is so jacked it will be smart and will not miss, as usual mr compiler doing everything), I noticied that homogenous coordinates are normally taught in column major as well so I guess thats the reason, but anyway this debate seems something like little endian vs big endian except that it's important for everyone to learn the difference between row & column major.   
+
+Going off topic a little, but still important, knowing how elements are storied in a 2d array is important so you know whats happening in the matrix, for example:
+In row-major order, the elements of a multi-dimensional array start from left to right then top to down, in C & C++ will look like this:
+float m[2][3]={{1, 2, 3}, {4, 5, 6}}; 
+    for(auto& a: m)
+        for(auto& b: a)
+            std::cout<<b<< " > ";
+            //1 > 2 > 3 > 4 > 5 > 6 > 
+
+In column-major order, which is used by languages such as FORTRAN and MATLAB, they store from top to down then left to right so the result will look like this instead:  
+//1 > 4 > 2 > 5 > 3 > 6
+
+            
 
 
 
